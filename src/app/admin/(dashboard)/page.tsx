@@ -2,17 +2,23 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Package, Layers, Image, Users, ArrowRight } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Package, Layers, Image, Newspaper, Download, MessageSquare, ArrowRight } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface Stats {
   products: number;
   categories: number;
   banners: number;
+  news: number;
+  downloads: number;
+  inquiries: number;
+  unreadInquiries: number;
 }
 
 export default function AdminDashboardPage() {
-  const [stats, setStats] = useState<Stats>({ products: 0, categories: 0, banners: 0 });
+  const [stats, setStats] = useState<Stats>({
+    products: 0, categories: 0, banners: 0, news: 0, downloads: 0, inquiries: 0, unreadInquiries: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -21,16 +27,25 @@ export default function AdminDashboardPage() {
 
   const fetchStats = async () => {
     try {
-      const [products, categories, banners] = await Promise.all([
+      const [products, categories, homeData, newsData, downloadsData, inquiriesData] = await Promise.all([
         fetch('/api/products?limit=1000').then((res) => res.json()),
         fetch('/api/categories').then((res) => res.json()),
         fetch('/api/home').then((res) => res.json()),
+        fetch('/api/admin/news', { credentials: 'include' }).then((res) => res.json()).catch(() => []),
+        fetch('/api/admin/downloads', { credentials: 'include' }).then((res) => res.json()).catch(() => []),
+        fetch('/api/admin/inquiries', { credentials: 'include' }).then((res) => res.json()).catch(() => []),
       ]);
+
+      const inquiriesArr = Array.isArray(inquiriesData) ? inquiriesData : [];
 
       setStats({
         products: Array.isArray(products) ? products.length : 0,
         categories: Array.isArray(categories) ? categories.length : 0,
-        banners: Array.isArray(banners.banners) ? banners.banners.length : 0,
+        banners: Array.isArray(homeData?.banners) ? homeData.banners.length : 0,
+        news: Array.isArray(newsData) ? newsData.length : 0,
+        downloads: Array.isArray(downloadsData) ? downloadsData.length : 0,
+        inquiries: inquiriesArr.length,
+        unreadInquiries: inquiriesArr.filter((i: { is_read?: boolean }) => !i.is_read).length,
       });
     } catch (error) {
       console.error('Failed to fetch stats:', error);
@@ -40,26 +55,18 @@ export default function AdminDashboardPage() {
   };
 
   const statCards = [
+    { title: 'Products', value: stats.products, icon: Package, href: '/admin/products', color: 'bg-orange-500' },
+    { title: 'Categories', value: stats.categories, icon: Layers, href: '/admin/categories', color: 'bg-blue-500' },
+    { title: 'Banners', value: stats.banners, icon: Image, href: '/admin/banners', color: 'bg-green-500' },
+    { title: 'News', value: stats.news, icon: Newspaper, href: '/admin/news', color: 'bg-purple-500' },
+    { title: 'Downloads', value: stats.downloads, icon: Download, href: '/admin/downloads', color: 'bg-teal-500' },
     {
-      title: 'Products',
-      value: stats.products,
-      icon: Package,
-      href: '/admin/products',
-      color: 'bg-orange-500',
-    },
-    {
-      title: 'Categories',
-      value: stats.categories,
-      icon: Layers,
-      href: '/admin/categories',
-      color: 'bg-blue-500',
-    },
-    {
-      title: 'Banners',
-      value: stats.banners,
-      icon: Image,
-      href: '/admin/banners',
-      color: 'bg-green-500',
+      title: 'Inquiries',
+      value: stats.inquiries,
+      icon: MessageSquare,
+      href: '/admin/inquiries',
+      color: 'bg-red-500',
+      badge: stats.unreadInquiries > 0 ? `${stats.unreadInquiries} new` : undefined,
     },
   ];
 
@@ -71,7 +78,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {statCards.map((stat) => {
           const Icon = stat.icon;
           return (
@@ -80,7 +87,14 @@ export default function AdminDashboardPage() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-500 text-sm">{stat.title}</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-gray-500 text-sm">{stat.title}</p>
+                        {stat.badge && (
+                          <span className="text-xs bg-red-500 text-white px-1.5 py-0.5 rounded-full">
+                            {stat.badge}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-3xl font-bold text-gray-800 mt-1">
                         {loading ? '-' : stat.value}
                       </p>
@@ -98,80 +112,6 @@ export default function AdminDashboardPage() {
             </Link>
           );
         })}
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <Link
-              href="/admin/products/new"
-              className="flex items-center gap-2 p-3 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              <Package className="w-5 h-5 text-orange-500" />
-              <span>Add New Product</span>
-            </Link>
-            <Link
-              href="/admin/categories/new"
-              className="flex items-center gap-2 p-3 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              <Layers className="w-5 h-5 text-blue-500" />
-              <span>Add New Category</span>
-            </Link>
-            <Link
-              href="/admin/banners/new"
-              className="flex items-center gap-2 p-3 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              <Image className="w-5 h-5 text-green-500" />
-              <span>Add New Banner</span>
-            </Link>
-            <Link
-              href="/admin/settings"
-              className="flex items-center gap-2 p-3 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              <Users className="w-5 h-5 text-purple-500" />
-              <span>Site Settings</span>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Website Info</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Website Status</span>
-                <span className="text-green-600 font-medium">Online</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total Products</span>
-                <span className="font-medium">{stats.products}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total Categories</span>
-                <span className="font-medium">{stats.categories}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Active Banners</span>
-                <span className="font-medium">{stats.banners}</span>
-              </div>
-            </div>
-            <div className="mt-4 pt-4 border-t">
-              <Link
-                href="/"
-                target="_blank"
-                className="text-orange-500 hover:underline text-sm"
-              >
-                View Website
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

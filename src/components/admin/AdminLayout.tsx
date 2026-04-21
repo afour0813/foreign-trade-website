@@ -12,7 +12,10 @@ import {
   LogOut, 
   Menu,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Newspaper,
+  Download,
+  MessageSquare
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -22,6 +25,9 @@ const navItems = [
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/categories', label: 'Categories', icon: Layers },
   { href: '/admin/banners', label: 'Banners', icon: Image },
+  { href: '/admin/news', label: 'News', icon: Newspaper },
+  { href: '/admin/downloads', label: 'Downloads', icon: Download },
+  { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
   { href: '/admin/settings', label: 'Site Settings', icon: Settings },
 ];
 

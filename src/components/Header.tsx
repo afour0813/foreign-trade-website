@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Menu, X, Phone, Mail } from 'lucide-react';
+import { Menu, X, Phone, Mail, ChevronDown } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 
@@ -77,11 +77,33 @@ export function Header() {
             <Link href="/" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               Home
             </Link>
-            <Link href="/products" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
-              Products
-            </Link>
             <Link href="/about" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               About Us
+            </Link>
+            <div className="relative group">
+              <button className="text-gray-700 hover:text-orange-500 font-medium transition-colors flex items-center gap-1">
+                Products <ChevronDown className="w-4 h-4" />
+              </button>
+              <div className="absolute top-full left-0 bg-white shadow-lg rounded-lg py-2 min-w-[220px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                <Link href="/products" className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-500 font-medium">
+                  All Products
+                </Link>
+                {categories.map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/products?category=${cat.slug}`}
+                    className="block px-4 py-2 text-gray-600 hover:bg-orange-50 hover:text-orange-500"
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <Link href="/news" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
+              News
+            </Link>
+            <Link href="/downloads" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
+              Download
             </Link>
             <Link href="/contact" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               Contact Us
@@ -105,18 +127,46 @@ export function Header() {
                   Home
                 </Link>
                 <Link 
+                  href="/about" 
+                  className="text-gray-700 hover:text-orange-500 font-medium py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  About Us
+                </Link>
+                <Link 
                   href="/products" 
                   className="text-gray-700 hover:text-orange-500 font-medium py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   Products
                 </Link>
+                {categories.length > 0 && (
+                  <div className="pl-4 space-y-1">
+                    {categories.map((cat) => (
+                      <Link
+                        key={cat.id}
+                        href={`/products?category=${cat.slug}`}
+                        className="block py-1.5 text-gray-600 hover:text-orange-500 text-sm"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {cat.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
                 <Link 
-                  href="/about" 
+                  href="/news" 
                   className="text-gray-700 hover:text-orange-500 font-medium py-2"
                   onClick={() => setIsOpen(false)}
                 >
-                  About Us
+                  News
+                </Link>
+                <Link 
+                  href="/downloads" 
+                  className="text-gray-700 hover:text-orange-500 font-medium py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Download
                 </Link>
                 <Link 
                   href="/contact" 
@@ -125,21 +175,6 @@ export function Header() {
                 >
                   Contact Us
                 </Link>
-                {categories.length > 0 && (
-                  <div className="border-t pt-4 mt-4">
-                    <p className="text-sm text-gray-500 mb-2">Categories</p>
-                    {categories.map((cat) => (
-                      <Link
-                        key={cat.id}
-                        href={`/products?category=${cat.slug}`}
-                        className="block py-2 text-gray-600 hover:text-orange-500"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {cat.name}
-                      </Link>
-                    ))}
-                  </div>
-                )}
               </nav>
             </SheetContent>
           </Sheet>

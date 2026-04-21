@@ -127,6 +127,74 @@ export const contactInfo = pgTable(
   }
 );
 
+// 新闻表
+export const news = pgTable(
+  "news",
+  {
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+    title: varchar("title", { length: 500 }).notNull(),
+    slug: varchar("slug", { length: 500 }).notNull().unique(),
+    content: text("content"),
+    summary: varchar("summary", { length: 1000 }),
+    imageUrl: varchar("image_url", { length: 500 }),
+    category: varchar("category", { length: 100 }).default("company").notNull(),
+    isActive: boolean("is_active").default(true).notNull(),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("news_slug_idx").on(table.slug),
+    index("news_category_idx").on(table.category),
+  ]
+);
+
+// 下载资源表
+export const downloads = pgTable(
+  "downloads",
+  {
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+    title: varchar("title", { length: 500 }).notNull(),
+    slug: varchar("slug", { length: 500 }).notNull().unique(),
+    description: text("description"),
+    fileUrl: varchar("file_url", { length: 500 }),
+    fileSize: varchar("file_size", { length: 50 }),
+    category: varchar("category", { length: 100 }).default("help").notNull(),
+    isActive: boolean("is_active").default(true).notNull(),
+    sortOrder: integer("sort_order").default(0).notNull(),
+    downloadCount: integer("download_count").default(0).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("downloads_slug_idx").on(table.slug),
+    index("downloads_category_idx").on(table.category),
+  ]
+);
+
+// 询盘表
+export const inquiries = pgTable(
+  "inquiries",
+  {
+    id: varchar("id", { length: 36 }).primaryKey().default(sql`gen_random_uuid()`),
+    name: varchar("name", { length: 200 }).notNull(),
+    email: varchar("email", { length: 200 }).notNull(),
+    phone: varchar("phone", { length: 50 }),
+    company: varchar("company", { length: 200 }),
+    subject: varchar("subject", { length: 500 }),
+    message: text("message").notNull(),
+    productId: varchar("product_id", { length: 36 }),
+    status: varchar("status", { length: 20 }).default("pending").notNull(),
+    isRead: boolean("is_read").default(false).notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }),
+  },
+  (table) => [
+    index("inquiries_status_idx").on(table.status),
+    index("inquiries_is_read_idx").on(table.isRead),
+  ]
+);
+
 // Zod Schemas
 export const insertAdminUserSchema = createInsertSchema(adminUsers).pick({ 
   username: true, 
@@ -186,3 +254,7 @@ export type InsertBanner = z.infer<typeof insertBannerSchema>;
 
 export type SiteSetting = typeof siteSettings.$inferSelect;
 export type ContactInfo = typeof contactInfo.$inferSelect;
+
+export type News = typeof news.$inferSelect;
+export type Download = typeof downloads.$inferSelect;
+export type Inquiry = typeof inquiries.$inferSelect;

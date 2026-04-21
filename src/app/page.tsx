@@ -7,6 +7,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { CategoryCard } from '@/components/CategoryCard';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 
 interface Product {
   id: string;
@@ -136,15 +137,23 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-800 mb-6">About Us</h2>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                Xiamen Sunny Hair Bow Co., Ltd is a professional manufacturer which mainly produces high quality 
-                Children&apos;s hair accessories including Hair clips, Headbands, Elastic Hair Bands, Hair Bows, 
-                Ponytail Holders, Baby Gift sets, Holiday Bows, Hair Ties and more.
-              </p>
-              <p className="text-gray-600 leading-relaxed mb-6">
-                With a wide range, good quality, reasonable prices and stylish designs, our products are 
-                extensively recognized and trusted by customers worldwide.
-              </p>
+              {aboutUs ? (
+                aboutUs.split('\\n').map((paragraph, idx) => (
+                  <p key={idx} className="text-gray-600 leading-relaxed mb-4">{paragraph}</p>
+                ))
+              ) : (
+                <>
+                  <p className="text-gray-600 leading-relaxed mb-6">
+                    We are a professional manufacturer which mainly produces high quality
+                    Children&apos;s hair accessories including Hair clips, Headbands, Elastic Hair Bands, Hair Bows,
+                    Ponytail Holders, Baby Gift sets, Holiday Bows, Hair Ties and more.
+                  </p>
+                  <p className="text-gray-600 leading-relaxed mb-6">
+                    With a wide range, good quality, reasonable prices and stylish designs, our products are
+                    extensively recognized and trusted by customers worldwide.
+                  </p>
+                </>
+              )}
               <Link href="/about">
                 <Button variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-100">
                   Learn More About Us
@@ -153,9 +162,12 @@ export default function HomePage() {
               </Link>
             </div>
             <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
-                <span className="text-6xl">🎀</span>
-              </div>
+              <Image
+                src="/images/about-banner.jpg"
+                alt="About annahairbows"
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
