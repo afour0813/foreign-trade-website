@@ -21,14 +21,14 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const navItems = [
-  { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/admin/products', label: 'Products', icon: Package },
-  { href: '/admin/categories', label: 'Categories', icon: Layers },
-  { href: '/admin/banners', label: 'Banners', icon: Image },
-  { href: '/admin/news', label: 'News', icon: Newspaper },
-  { href: '/admin/downloads', label: 'Downloads', icon: Download },
-  { href: '/admin/inquiries', label: 'Inquiries', icon: MessageSquare },
-  { href: '/admin/settings', label: 'Site Settings', icon: Settings },
+  { href: '/admin', label: '控制台', icon: LayoutDashboard },
+  { href: '/admin/products', label: '产品管理', icon: Package },
+  { href: '/admin/categories', label: '分类管理', icon: Layers },
+  { href: '/admin/banners', label: '横幅管理', icon: Image },
+  { href: '/admin/news', label: '新闻管理', icon: Newspaper },
+  { href: '/admin/downloads', label: '下载管理', icon: Download },
+  { href: '/admin/inquiries', label: '询盘管理', icon: MessageSquare },
+  { href: '/admin/settings', label: '站点设置', icon: Settings },
 ];
 
 interface AdminLayoutProps {
@@ -42,7 +42,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  // Hide the frontend header and footer when in admin
   useEffect(() => {
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
@@ -73,7 +72,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         router.push('/admin/login');
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error('认证检查失败:', error);
       setIsAuthenticated(false);
       router.push('/admin/login');
     }
@@ -88,14 +87,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       await fetch('/api/admin/auth', { method: 'DELETE' });
       router.push('/admin/login');
     } catch (error) {
-      console.error('Logout failed:', error);
+      console.error('退出登录失败:', error);
     }
   };
 
   if (isAuthenticated === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-pulse text-gray-500">Loading...</div>
+        <div className="animate-pulse text-gray-500">加载中...</div>
       </div>
     );
   }
@@ -106,7 +105,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Top Navigation */}
+      {/* 顶部导航 */}
       <header className="bg-white shadow-sm fixed top-0 left-0 right-0 z-50">
         <div className="flex items-center justify-between px-4 h-16">
           <div className="flex items-center gap-4">
@@ -118,7 +117,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">
                 <div className="p-4 border-b">
-                  <h2 className="font-bold text-lg text-orange-500">Admin Panel</h2>
+                  <h2 className="font-bold text-lg text-orange-500">管理后台</h2>
                 </div>
                 <nav className="p-4 space-y-1">
                   {navItems.map((item) => {
@@ -145,7 +144,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </Sheet>
             
             <Link href="/admin" className="font-bold text-xl text-orange-500">
-              Admin Panel
+              管理后台
             </Link>
           </div>
 
@@ -155,7 +154,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               target="_blank"
               className="text-sm text-gray-500 hover:text-orange-500"
             >
-              View Website
+              查看网站
             </Link>
             <Button 
               variant="ghost" 
@@ -164,15 +163,15 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               className="text-gray-500 hover:text-red-500"
             >
               <LogOut className="w-4 h-4 mr-2" />
-              Logout
+              退出登录
             </Button>
           </div>
         </div>
       </header>
 
-      {/* Sidebar + Content */}
+      {/* 侧边栏 + 内容 */}
       <div className="flex pt-16">
-        {/* Desktop Sidebar */}
+        {/* 桌面端侧边栏 */}
         <aside 
           className={`hidden lg:block bg-white border-r fixed left-0 top-16 bottom-0 transition-all duration-300 ${
             sidebarCollapsed ? 'w-16' : 'w-64'
@@ -213,7 +212,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           </Button>
         </aside>
 
-        {/* Main Content */}
+        {/* 主内容 */}
         <main 
           className={`flex-1 p-6 transition-all duration-300 ${
             sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-64'

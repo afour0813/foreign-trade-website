@@ -48,36 +48,36 @@ export default function AdminDashboardPage() {
         unreadInquiries: inquiriesArr.filter((i: { is_read?: boolean }) => !i.is_read).length,
       });
     } catch (error) {
-      console.error('Failed to fetch stats:', error);
+      console.error('获取统计数据失败:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const statCards = [
-    { title: 'Products', value: stats.products, icon: Package, href: '/admin/products', color: 'bg-orange-500' },
-    { title: 'Categories', value: stats.categories, icon: Layers, href: '/admin/categories', color: 'bg-blue-500' },
-    { title: 'Banners', value: stats.banners, icon: Image, href: '/admin/banners', color: 'bg-green-500' },
-    { title: 'News', value: stats.news, icon: Newspaper, href: '/admin/news', color: 'bg-purple-500' },
-    { title: 'Downloads', value: stats.downloads, icon: Download, href: '/admin/downloads', color: 'bg-teal-500' },
+    { title: '产品', value: stats.products, icon: Package, href: '/admin/products', color: 'bg-orange-500' },
+    { title: '分类', value: stats.categories, icon: Layers, href: '/admin/categories', color: 'bg-blue-500' },
+    { title: '横幅', value: stats.banners, icon: Image, href: '/admin/banners', color: 'bg-green-500' },
+    { title: '新闻', value: stats.news, icon: Newspaper, href: '/admin/news', color: 'bg-purple-500' },
+    { title: '下载', value: stats.downloads, icon: Download, href: '/admin/downloads', color: 'bg-teal-500' },
     {
-      title: 'Inquiries',
+      title: '询盘',
       value: stats.inquiries,
       icon: MessageSquare,
       href: '/admin/inquiries',
       color: 'bg-red-500',
-      badge: stats.unreadInquiries > 0 ? `${stats.unreadInquiries} new` : undefined,
+      badge: stats.unreadInquiries > 0 ? `${stats.unreadInquiries} 条未读` : undefined,
     },
   ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
-        <p className="text-gray-500">Welcome to the admin panel</p>
+        <h1 className="text-2xl font-bold text-gray-800">控制台</h1>
+        <p className="text-gray-500">欢迎进入管理后台</p>
       </div>
 
-      {/* Stats Grid */}
+      {/* 统计卡片 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {statCards.map((stat) => {
           const Icon = stat.icon;
@@ -104,7 +104,7 @@ export default function AdminDashboardPage() {
                     </div>
                   </div>
                   <div className="mt-4 flex items-center text-sm text-orange-500">
-                    <span>Manage {stat.title.toLowerCase()}</span>
+                    <span>管理{stat.title}</span>
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
                 </CardContent>

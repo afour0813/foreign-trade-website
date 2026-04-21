@@ -18,12 +18,7 @@ export default function NewCategoryPage() {
   const [error, setError] = useState('');
   
   const [formData, setFormData] = useState({
-    name: '',
-    slug: '',
-    description: '',
-    image_url: '',
-    sort_order: 0,
-    is_active: true,
+    name: '', slug: '', description: '', image_url: '', sort_order: 0, is_active: true,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -35,7 +30,6 @@ export default function NewCategoryPage() {
     setFormData((prev) => ({ ...prev, is_active: checked }));
   };
 
-  // Auto-generate slug from name
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -53,18 +47,12 @@ export default function NewCategoryPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || 'Failed to create category');
-        return;
-      }
-
+      if (!res.ok) { setError(data.error || '创建分类失败'); return; }
       router.push('/admin/categories');
     } catch (err) {
-      console.error('Save failed:', err);
-      setError('Failed to create category');
+      console.error('保存失败:', err);
+      setError('创建分类失败');
     } finally {
       setSaving(false);
     }
@@ -73,115 +61,57 @@ export default function NewCategoryPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
-        <Link href="/admin/categories">
-          <Button variant="ghost" size="icon">
-            <ArrowLeft className="w-4 h-4" />
-          </Button>
-        </Link>
+        <Link href="/admin/categories"><Button variant="ghost" size="icon"><ArrowLeft className="w-4 h-4" /></Button></Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Add New Category</h1>
-          <p className="text-gray-500">Create a new category</p>
+          <h1 className="text-2xl font-bold text-gray-800">添加分类</h1>
+          <p className="text-gray-500">创建一个新的产品分类</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
+        {error && (<Alert variant="destructive"><AlertDescription>{error}</AlertDescription></Alert>)}
 
         <Card>
-          <CardHeader>
-            <CardTitle>Category Information</CardTitle>
-          </CardHeader>
+          <CardHeader><CardTitle>分类信息</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Category Name *</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleNameChange}
-                  placeholder="Enter category name"
-                  required
-                />
+                <Label htmlFor="name">分类名称 *</Label>
+                <Input id="name" name="name" value={formData.name} onChange={handleNameChange} placeholder="请输入分类名称" required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="slug">Slug *</Label>
-                <Input
-                  id="slug"
-                  name="slug"
-                  value={formData.slug}
-                  onChange={handleChange}
-                  placeholder="category-slug"
-                  required
-                />
+                <Label htmlFor="slug">URL别名 *</Label>
+                <Input id="slug" name="slug" value={formData.slug} onChange={handleChange} placeholder="category-slug" required />
               </div>
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="image_url">Image URL</Label>
-              <Input
-                id="image_url"
-                name="image_url"
-                value={formData.image_url}
-                onChange={handleChange}
-                placeholder="https://example.com/image.jpg"
-              />
+              <Label htmlFor="image_url">图片地址</Label>
+              <Input id="image_url" name="image_url" value={formData.image_url} onChange={handleChange} placeholder="https://example.com/image.jpg" />
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={3}
-                placeholder="Enter category description"
-              />
+              <Label htmlFor="description">分类描述</Label>
+              <Textarea id="description" name="description" value={formData.description} onChange={handleChange} rows={3} placeholder="请输入分类描述" />
             </div>
-
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="sort_order">Sort Order</Label>
-                <Input
-                  id="sort_order"
-                  name="sort_order"
-                  type="number"
-                  value={formData.sort_order}
-                  onChange={handleChange}
-                />
+                <Label htmlFor="sort_order">排序</Label>
+                <Input id="sort_order" name="sort_order" type="number" value={formData.sort_order} onChange={handleChange} />
               </div>
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
-                  <Label className="font-medium">Active</Label>
-                  <p className="text-sm text-gray-500">Show this category on website</p>
+                  <Label className="font-medium">启用</Label>
+                  <p className="text-sm text-gray-500">在网站上显示此分类</p>
                 </div>
-                <Switch
-                  checked={formData.is_active}
-                  onCheckedChange={handleSwitchChange}
-                />
+                <Switch checked={formData.is_active} onCheckedChange={handleSwitchChange} />
               </div>
             </div>
           </CardContent>
         </Card>
 
         <div className="flex justify-end gap-4">
-          <Link href="/admin/categories">
-            <Button variant="outline" type="button">
-              Cancel
-            </Button>
-          </Link>
+          <Link href="/admin/categories"><Button variant="outline" type="button">取消</Button></Link>
           <Button type="submit" className="bg-orange-500 hover:bg-orange-600" disabled={saving}>
-            {saving ? 'Creating...' : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                Create Category
-              </>
-            )}
+            {saving ? '创建中...' : (<><Save className="w-4 h-4 mr-2" />创建分类</>)}
           </Button>
         </div>
       </form>

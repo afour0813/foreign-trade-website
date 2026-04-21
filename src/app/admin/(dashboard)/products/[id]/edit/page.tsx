@@ -10,27 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Save, X } from 'lucide-react';
+import { ArrowLeft, Save } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-
-interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description?: string;
-  images?: string[];
-  price?: string;
-  category_id?: string;
-  is_featured: boolean;
-  is_active: boolean;
-  sort_order: number;
-  min_order?: string;
-  material?: string;
-  size?: string;
-  color?: string;
-  packaging?: string;
-  moq?: string;
-}
 
 interface Category {
   id: string;
@@ -45,12 +26,12 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [categories, setCategories] = useState<Category[]>([]);
-  
-  const [formData, setFormData] = useState<Partial<Product>>({
+
+  const [formData, setFormData] = useState({
     name: '',
     slug: '',
     description: '',
-    images: [],
+    images: [] as string[],
     price: '',
     category_id: '',
     is_featured: false,
@@ -65,31 +46,50 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   });
 
   useEffect(() => {
-    fetchData();
+    if (!id) return;
+    fetchCategories();
+    fetchProduct();
   }, [id]);
 
-  const fetchData = async () => {
+  const fetchCategories = async () => {
     try {
-      const [productRes, categoriesRes] = await Promise.all([
-        fetch(`/api/admin/products?id=${id}`),
-        fetch('/api/categories'),
-      ]);
-
-      const product = await productRes.json();
-      const categoriesData = await categoriesRes.json();
-
-      if (product.error) {
-        setError(product.error);
-        return;
-      }
-
-      setFormData(product);
-      if (Array.isArray(categoriesData)) {
-        setCategories(categoriesData);
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setCategories(data);
       }
     } catch (err) {
-      console.error('Failed to fetch product:', err);
-      setError('Failed to load product');
+      console.error('获取分类失败:', err);
+    }
+  };
+
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch(`/api/products?slug=${id}`);
+      const data = await res.json();
+      
+      if (data && !data.error) {
+        setFormData({
+          name: data.name || '',
+          slug: data.slug || '',
+          description: data.description || '',
+          images: data.images || [],
+          price: data.price || '',
+          category_id: data.category_id || '',
+          is_featured: data.is_featured || false,
+          is_active: data.is_active !== false,
+          sort_order: data.sort_order || 0,
+          min_order: data.min_order || '',
+          material: data.material || '',
+          size: data.size || '',
+          color: data.color || '',
+          packaging: data.packaging || '',
+          moq: data.moq || '',
+        });
+      }
+    } catch (err) {
+      console.error('获取产品失败:', err);
+      setError('获取产品信息失败');
     } finally {
       setLoading(false);
     }
@@ -100,7 +100,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSwitchChange = (name: keyof Product, checked: boolean) => {
+  const handleSwitchChange = (name: string, checked: boolean) => {
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
@@ -119,20 +119,20 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       const res = await fetch('/api/admin/products', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, id }),
+        body: JSON.stringify({ id, ...formData }),
       });
 
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Failed to save product');
+        setError(data.error || '保存产品失败');
         return;
       }
 
       router.push('/admin/products');
     } catch (err) {
-      console.error('Save failed:', err);
-      setError('Failed to save product');
+      console.error('保存失败:', err);
+      setError('保存产品失败');
     } finally {
       setSaving(false);
     }
@@ -147,22 +147,6 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     );
   }
 
-  if (error && !formData.name) {
-    return (
-      <div className="space-y-6">
-        <Link href="/admin/products">
-          <Button variant="ghost">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Products
-          </Button>
-        </Link>
-        <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-4">
@@ -172,8 +156,8 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Edit Product</h1>
-          <p className="text-gray-500">Update product information</p>
+          <h1 className="text-2xl font-bold text-gray-800">编辑产品</h1>
+          <p className="text-gray-500">修改产品信息</p>
         </div>
       </div>
 
@@ -186,166 +170,87 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
         <Card>
           <CardHeader>
-            <CardTitle>Basic Information</CardTitle>
+            <CardTitle>基本信息</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Product Name *</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  value={formData.name || ''}
-                  onChange={handleChange}
-                  required
-                />
+                <Label htmlFor="name">产品名称 *</Label>
+                <Input id="name" name="name" value={formData.name} onChange={handleChange} placeholder="请输入产品名称" required />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="slug">Slug *</Label>
-                <Input
-                  id="slug"
-                  name="slug"
-                  value={formData.slug || ''}
-                  onChange={handleChange}
-                  required
-                />
+                <Label htmlFor="slug">URL别名 *</Label>
+                <Input id="slug" name="slug" value={formData.slug} onChange={handleChange} placeholder="product-slug" required />
               </div>
             </div>
-
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="category_id">Category</Label>
-                <select
-                  id="category_id"
-                  name="category_id"
-                  value={formData.category_id || ''}
-                  onChange={handleChange}
-                  className="w-full border rounded-md px-3 py-2"
-                >
-                  <option value="">Select Category</option>
+                <Label htmlFor="category_id">产品分类</Label>
+                <select id="category_id" name="category_id" value={formData.category_id} onChange={handleChange} className="w-full border rounded-md px-3 py-2">
+                  <option value="">选择分类</option>
                   {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </option>
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="price">Price</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  value={formData.price || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., $5.00 / pair"
-                />
+                <Label htmlFor="price">价格</Label>
+                <Input id="price" name="price" value={formData.price} onChange={handleChange} placeholder="例如：$5.00 / pair" />
               </div>
             </div>
-
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
-              <Textarea
-                id="description"
-                name="description"
-                value={formData.description || ''}
-                onChange={handleChange}
-                rows={4}
-              />
+              <Label htmlFor="description">产品描述</Label>
+              <Textarea id="description" name="description" value={formData.description} onChange={handleChange} rows={4} placeholder="请输入产品描述" />
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Product Images</CardTitle>
+            <CardTitle>产品图片</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="images">Image URLs (one per line)</Label>
-              <Textarea
-                id="images"
-                name="images"
-                value={(formData.images || []).join('\n')}
-                onChange={handleImagesChange}
-                placeholder="https://example.com/image1.jpg&#10;https://example.com/image2.jpg"
-                rows={4}
-              />
-              <p className="text-sm text-gray-500">
-                Enter one image URL per line. The first image will be used as the main product image.
-              </p>
+              <Label htmlFor="images">图片地址（每行一个）</Label>
+              <Textarea id="images" name="images" value={formData.images.join('\n')} onChange={handleImagesChange} rows={4} placeholder="https://example.com/image1.jpg" />
+              <p className="text-sm text-gray-500">每行输入一个图片URL，第一张图片将作为产品主图。</p>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Product Details</CardTitle>
+            <CardTitle>产品详情</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="material">Material</Label>
-                <Input
-                  id="material"
-                  name="material"
-                  value={formData.material || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., Cotton, Velvet"
-                />
+                <Label htmlFor="material">材质</Label>
+                <Input id="material" name="material" value={formData.material} onChange={handleChange} placeholder="例如：棉质、丝绒" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="size">Size</Label>
-                <Input
-                  id="size"
-                  name="size"
-                  value={formData.size || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., 5cm"
-                />
+                <Label htmlFor="size">尺寸</Label>
+                <Input id="size" name="size" value={formData.size} onChange={handleChange} placeholder="例如：5cm" />
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="color">Color</Label>
-                <Input
-                  id="color"
-                  name="color"
-                  value={formData.color || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., Pink, Blue, Mixed"
-                />
+                <Label htmlFor="color">颜色</Label>
+                <Input id="color" name="color" value={formData.color} onChange={handleChange} placeholder="例如：粉色、蓝色、混色" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="moq">MOQ (Minimum Order Quantity)</Label>
-                <Input
-                  id="moq"
-                  name="moq"
-                  value={formData.moq || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., 50 pairs"
-                />
+                <Label htmlFor="moq">最小起订量</Label>
+                <Input id="moq" name="moq" value={formData.moq} onChange={handleChange} placeholder="例如：50对" />
               </div>
             </div>
             <div className="grid md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="min_order">Minimum Order</Label>
-                <Input
-                  id="min_order"
-                  name="min_order"
-                  value={formData.min_order || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., 1 pair"
-                />
+                <Label htmlFor="min_order">最低订购量</Label>
+                <Input id="min_order" name="min_order" value={formData.min_order} onChange={handleChange} placeholder="例如：1对" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="packaging">Packaging</Label>
-                <Input
-                  id="packaging"
-                  name="packaging"
-                  value={formData.packaging || ''}
-                  onChange={handleChange}
-                  placeholder="e.g., OPP bag"
-                />
+                <Label htmlFor="packaging">包装方式</Label>
+                <Input id="packaging" name="packaging" value={formData.packaging} onChange={handleChange} placeholder="例如：OPP袋" />
               </div>
             </div>
           </CardContent>
@@ -353,41 +258,27 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
         <Card>
           <CardHeader>
-            <CardTitle>Settings</CardTitle>
+            <CardTitle>状态设置</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4">
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
-                  <Label htmlFor="is_active" className="font-medium">Active</Label>
-                  <p className="text-sm text-gray-500">Show this product on website</p>
+                  <Label className="font-medium">上架</Label>
+                  <p className="text-sm text-gray-500">在网站上显示此产品</p>
                 </div>
-                <Switch
-                  id="is_active"
-                  checked={formData.is_active ?? true}
-                  onCheckedChange={(checked) => handleSwitchChange('is_active', checked)}
-                />
+                <Switch checked={formData.is_active} onCheckedChange={(checked) => handleSwitchChange('is_active', checked)} />
               </div>
               <div className="flex items-center justify-between p-4 border rounded-lg">
                 <div>
-                  <Label htmlFor="is_featured" className="font-medium">Featured</Label>
-                  <p className="text-sm text-gray-500">Show on homepage</p>
+                  <Label className="font-medium">推荐</Label>
+                  <p className="text-sm text-gray-500">在首页展示</p>
                 </div>
-                <Switch
-                  id="is_featured"
-                  checked={formData.is_featured ?? false}
-                  onCheckedChange={(checked) => handleSwitchChange('is_featured', checked)}
-                />
+                <Switch checked={formData.is_featured} onCheckedChange={(checked) => handleSwitchChange('is_featured', checked)} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="sort_order">Sort Order</Label>
-                <Input
-                  id="sort_order"
-                  name="sort_order"
-                  type="number"
-                  value={formData.sort_order || 0}
-                  onChange={handleChange}
-                />
+                <Label htmlFor="sort_order">排序</Label>
+                <Input id="sort_order" name="sort_order" type="number" value={formData.sort_order} onChange={handleChange} />
               </div>
             </div>
           </CardContent>
@@ -395,17 +286,10 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
 
         <div className="flex justify-end gap-4">
           <Link href="/admin/products">
-            <Button variant="outline" type="button">
-              Cancel
-            </Button>
+            <Button variant="outline" type="button">取消</Button>
           </Link>
           <Button type="submit" className="bg-orange-500 hover:bg-orange-600" disabled={saving}>
-            {saving ? 'Saving...' : (
-              <>
-                <Save className="w-4 h-4 mr-2" />
-                Save Changes
-              </>
-            )}
+            {saving ? '保存中...' : (<><Save className="w-4 h-4 mr-2" />保存修改</>)}
           </Button>
         </div>
       </form>

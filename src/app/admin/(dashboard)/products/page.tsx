@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -75,14 +75,14 @@ export default function AdminProductsPage() {
         setCategories(categoriesData);
       }
     } catch (error) {
-      console.error('Failed to fetch data:', error);
+      console.error('获取数据失败:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this product?')) return;
+    if (!confirm('确定要删除此产品吗？')) return;
     
     setDeletingId(id);
     try {
@@ -91,11 +91,11 @@ export default function AdminProductsPage() {
         setProducts(products.filter((p) => p.id !== id));
       } else {
         const data = await res.json();
-        alert(data.error || 'Failed to delete product');
+        alert(data.error || '删除产品失败');
       }
     } catch (error) {
-      console.error('Delete failed:', error);
-      alert('Failed to delete product');
+      console.error('删除失败:', error);
+      alert('删除产品失败');
     } finally {
       setDeletingId(null);
     }
@@ -120,7 +120,7 @@ export default function AdminProductsPage() {
         );
       }
     } catch (error) {
-      console.error('Toggle featured failed:', error);
+      console.error('切换推荐失败:', error);
     }
   };
 
@@ -143,7 +143,7 @@ export default function AdminProductsPage() {
         );
       }
     } catch (error) {
-      console.error('Toggle active failed:', error);
+      console.error('切换状态失败:', error);
     }
   };
 
@@ -169,23 +169,23 @@ export default function AdminProductsPage() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">Products</h1>
-          <p className="text-gray-500">Manage your products ({products.length})</p>
+          <h1 className="text-2xl font-bold text-gray-800">产品管理</h1>
+          <p className="text-gray-500">管理您的产品（共 {products.length} 件）</p>
         </div>
         <Link href="/admin/products/new">
           <Button className="bg-orange-500 hover:bg-orange-600">
             <Plus className="w-4 h-4 mr-2" />
-            Add Product
+            添加产品
           </Button>
         </Link>
       </div>
 
-      {/* Filters */}
+      {/* 筛选 */}
       <Card>
         <CardContent className="p-4">
           <div className="flex flex-col sm:flex-row gap-4">
             <Input
-              placeholder="Search products..."
+              placeholder="搜索产品..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="sm:max-w-xs"
@@ -195,7 +195,7 @@ export default function AdminProductsPage() {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="border rounded-md px-3 py-2 text-sm"
             >
-              <option value="">All Categories</option>
+              <option value="">全部分类</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.name}>
                   {cat.name}
@@ -206,27 +206,27 @@ export default function AdminProductsPage() {
         </CardContent>
       </Card>
 
-      {/* Products Table */}
+      {/* 产品表格 */}
       <Card>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-20">Image</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Price</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="w-20">Featured</TableHead>
-                  <TableHead className="w-20">Actions</TableHead>
+                  <TableHead className="w-20">图片</TableHead>
+                  <TableHead>名称</TableHead>
+                  <TableHead>分类</TableHead>
+                  <TableHead>价格</TableHead>
+                  <TableHead>状态</TableHead>
+                  <TableHead className="w-20">推荐</TableHead>
+                  <TableHead className="w-20">操作</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredProducts.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-8 text-gray-500">
-                      No products found
+                      暂无产品
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -244,7 +244,7 @@ export default function AdminProductsPage() {
                           </div>
                         ) : (
                           <div className="w-12 h-12 rounded bg-gray-100 flex items-center justify-center">
-                            <span className="text-gray-400 text-xs">No image</span>
+                            <span className="text-gray-400 text-xs">无图</span>
                           </div>
                         )}
                       </TableCell>
@@ -260,7 +260,7 @@ export default function AdminProductsPage() {
                           onClick={() => toggleActive(product)}
                           style={{ cursor: 'pointer' }}
                         >
-                          {product.is_active ? 'Active' : 'Inactive'}
+                          {product.is_active ? '已上架' : '已下架'}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -286,13 +286,13 @@ export default function AdminProductsPage() {
                             <DropdownMenuItem asChild>
                               <Link href={`/products/${product.slug}`} target="_blank">
                                 <Eye className="w-4 h-4 mr-2" />
-                                View
+                                查看
                               </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild>
                               <Link href={`/admin/products/${product.id}/edit`}>
                                 <Pencil className="w-4 h-4 mr-2" />
-                                Edit
+                                编辑
                               </Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem
@@ -301,7 +301,7 @@ export default function AdminProductsPage() {
                               className="text-red-600"
                             >
                               <Trash2 className="w-4 h-4 mr-2" />
-                              Delete
+                              删除
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

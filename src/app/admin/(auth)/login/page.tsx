@@ -17,7 +17,6 @@ export default function AdminLoginPage() {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-    // Hide frontend header and footer on admin pages
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
     if (header) header.style.display = 'none';
@@ -41,7 +40,7 @@ export default function AdminLoginPage() {
         return;
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error('认证检查失败:', error);
     }
     setCheckingAuth(false);
   };
@@ -61,13 +60,13 @@ export default function AdminLoginPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Login failed');
+        setError(data.error || '登录失败');
         return;
       }
 
       router.push('/admin');
     } catch (err) {
-      setError('Login failed. Please try again.');
+      setError('登录失败，请重试。');
     } finally {
       setLoading(false);
     }
@@ -76,7 +75,7 @@ export default function AdminLoginPage() {
   if (checkingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-pulse text-gray-500">Loading...</div>
+        <div className="animate-pulse text-gray-500">加载中...</div>
       </div>
     );
   }
@@ -85,9 +84,9 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-orange-500">Admin Login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-orange-500">管理员登录</CardTitle>
           <CardDescription>
-            Enter your credentials to access the admin panel
+            请输入您的账号和密码登录管理后台
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -99,25 +98,25 @@ export default function AdminLoginPage() {
             )}
             
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">用户名</Label>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
+                placeholder="请输入用户名"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">密码</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="请输入密码"
                 required
               />
             </div>
@@ -127,12 +126,12 @@ export default function AdminLoginPage() {
               className="w-full bg-orange-500 hover:bg-orange-600"
               disabled={loading}
             >
-              {loading ? 'Logging in...' : 'Login'}
+              {loading ? '登录中...' : '登录'}
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
-            <p>First time? Contact your system administrator to create an account.</p>
+            <p>首次使用？请联系系统管理员创建账号。</p>
           </div>
         </CardContent>
       </Card>

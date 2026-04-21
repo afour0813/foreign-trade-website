@@ -20,7 +20,6 @@ export default function AdminRegisterPage() {
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   useEffect(() => {
-    // Hide frontend header and footer on admin pages
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
     if (header) header.style.display = 'none';
@@ -44,7 +43,7 @@ export default function AdminRegisterPage() {
         return;
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error('认证检查失败:', error);
     }
     setCheckingAuth(false);
   };
@@ -55,12 +54,12 @@ export default function AdminRegisterPage() {
     setSuccess('');
 
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      setError('两次输入的密码不一致');
       return;
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError('密码长度不能少于6位');
       return;
     }
 
@@ -76,22 +75,21 @@ export default function AdminRegisterPage() {
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || 'Registration failed');
+        setError(data.error || '注册失败');
         return;
       }
 
-      setSuccess('Account created successfully! You can now login.');
+      setSuccess('账号创建成功！即将跳转到登录页面...');
       setUsername('');
       setPassword('');
       setConfirmPassword('');
       setEmail('');
       
-      // Redirect to login after 2 seconds
       setTimeout(() => {
         router.push('/admin/login');
       }, 2000);
     } catch (err) {
-      setError('Registration failed. Please try again.');
+      setError('注册失败，请重试。');
     } finally {
       setLoading(false);
     }
@@ -100,7 +98,7 @@ export default function AdminRegisterPage() {
   if (checkingAuth) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-pulse text-gray-500">Loading...</div>
+        <div className="animate-pulse text-gray-500">加载中...</div>
       </div>
     );
   }
@@ -109,9 +107,9 @@ export default function AdminRegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-orange-500">Create Admin Account</CardTitle>
+          <CardTitle className="text-2xl font-bold text-orange-500">创建管理员账号</CardTitle>
           <CardDescription>
-            Set up your admin account to manage the website
+            注册管理员账号以管理网站内容
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -129,48 +127,48 @@ export default function AdminRegisterPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="username">Username *</Label>
+              <Label htmlFor="username">用户名 *</Label>
               <Input
                 id="username"
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Choose a username"
+                placeholder="请输入用户名"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">邮箱</Label>
               <Input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com (optional)"
+                placeholder="your@email.com（选填）"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password">Password *</Label>
+              <Label htmlFor="password">密码 *</Label>
               <Input
                 id="password"
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Choose a password (min 6 characters)"
+                placeholder="请输入密码（至少6位）"
                 required
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm Password *</Label>
+              <Label htmlFor="confirmPassword">确认密码 *</Label>
               <Input
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Confirm your password"
+                placeholder="请再次输入密码"
                 required
               />
             </div>
@@ -180,12 +178,12 @@ export default function AdminRegisterPage() {
               className="w-full bg-orange-500 hover:bg-orange-600"
               disabled={loading || !!success}
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {loading ? '创建中...' : '创建账号'}
             </Button>
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
-            <p>Already have an account? <a href="/admin/login" className="text-orange-500 hover:underline">Login here</a></p>
+            <p>已有账号？<a href="/admin/login" className="text-orange-500 hover:underline">去登录</a></p>
           </div>
         </CardContent>
       </Card>
