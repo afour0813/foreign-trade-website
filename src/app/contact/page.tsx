@@ -64,7 +64,7 @@ export default function ContactPage() {
 
   const defaultContact = {
     address: '#70 BLDG, XIANGFU SANLI ROAD, XIANG\'AN DISTRICT 361101, XIAMEN, FUJIAN, CHINA',
-    phone: '86-18250858312',
+    phone: '13400688707',
     email: 'enqi@qqq.com',
     whatsapp: '',
     wechat: '',
