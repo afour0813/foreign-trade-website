@@ -1,35 +1,222 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
+'use client';
 
-export const metadata: Metadata = {
-  title: '扣子编程 - AI 开发伙伴',
-  description: '扣子编程，你的 AI 开发伙伴已就位',
-};
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { BannerCarousel } from '@/components/BannerCarousel';
+import { ProductCard } from '@/components/ProductCard';
+import { CategoryCard } from '@/components/CategoryCard';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
-export default function Home() {
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  images?: string[];
+  price?: string;
+  categories?: {
+    name: string;
+    slug: string;
+  };
+}
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+  image_url?: string;
+  description?: string;
+}
+
+interface Banner {
+  id: string;
+  title?: string;
+  image_url: string;
+  link_url?: string;
+  description?: string;
+}
+
+export default function HomePage() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [aboutUs, setAboutUs] = useState('');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/home')
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data.products || []);
+        setCategories(data.categories || []);
+        setAboutUs(data.aboutUs || '');
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to fetch home data:', err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-pink-500">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-full items-center justify-center bg-background text-foreground transition-colors duration-300 dark:bg-background dark:text-foreground overflow-hidden min-h-screen">
-      {/* 主容器 */}
-      <main className="flex w-full h-full max-w-3xl flex-col items-center justify-center px-16 py-32 sm:items-center">
-        <div className="flex flex-col items-center justify-between gap-4">
-           <Image
-            src="https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif"
-            alt="扣子编程 Logo"
-            width={156}
-            height={130}
-          />
-          <div>
-            <div className="flex flex-col items-center gap-2 text-center sm:items-center sm:text-center">
-              <h1 className="max-w-xl text-base font-semibold leading-tight tracking-tight text-foreground dark:text-foreground">
-                应用开发中
-              </h1>
-              <p className="max-w-2xl text-sm leading-8 text-muted-foreground dark:text-muted-foreground">
-                请稍后，页面即将呈现
+    <main>
+      {/* Banner Carousel */}
+      <BannerCarousel />
+
+      {/* Categories Section */}
+      <section className="py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Our Categories</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Explore our wide range of high-quality children&apos;s hair accessories
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {categories.slice(0, 8).map((category) => (
+              <CategoryCard key={category.id} category={category} />
+            ))}
+          </div>
+
+          <div className="text-center mt-8">
+            <Link href="/products">
+              <Button variant="outline" className="border-pink-500 text-pink-500 hover:bg-pink-50">
+                View All Products
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Products Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Featured Products</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Check out our most popular and trending hair accessories
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+
+          {products.length === 0 && (
+            <div className="text-center py-12 text-gray-500">
+              <p>No products available yet. Check back soon!</p>
+            </div>
+          )}
+
+          <div className="text-center mt-8">
+            <Link href="/products">
+              <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+                View All Products
+                <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* About Preview Section */}
+      <section className="py-16 bg-pink-50">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-800 mb-6">About Us</h2>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                Xiamen Sunny Hair Bow Co., Ltd is a professional manufacturer which mainly produces high quality 
+                Children&apos;s hair accessories including Hair clips, Headbands, Elastic Hair Bands, Hair Bows, 
+                Ponytail Holders, Baby Gift sets, Holiday Bows, Hair Ties and more.
+              </p>
+              <p className="text-gray-600 leading-relaxed mb-6">
+                With a wide range, good quality, reasonable prices and stylish designs, our products are 
+                extensively recognized and trusted by customers worldwide.
+              </p>
+              <Link href="/about">
+                <Button variant="outline" className="border-pink-500 text-pink-500 hover:bg-pink-100">
+                  Learn More About Us
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
+            <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+                <span className="text-6xl">🎀</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">Why Choose Us</h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">✨</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">High Quality</h3>
+              <p className="text-gray-600">
+                We use premium materials to ensure every product meets the highest quality standards.
+              </p>
+            </div>
+
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🎨</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Stylish Design</h3>
+              <p className="text-gray-600">
+                Our designs are trendy, colorful, and loved by children and parents alike.
+              </p>
+            </div>
+
+            <div className="text-center p-6">
+              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl">🚚</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Fast Shipping</h3>
+              <p className="text-gray-600">
+                We offer fast and reliable shipping worldwide to ensure your orders arrive quickly.
               </p>
             </div>
           </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 bg-pink-500 text-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+          <p className="text-pink-100 mb-8 max-w-2xl mx-auto">
+            Contact us today for wholesale inquiries, custom orders, or any questions about our products.
+          </p>
+          <Link href="/contact">
+            <Button variant="secondary" className="bg-white text-pink-500 hover:bg-pink-50">
+              Contact Us Now
+              <ArrowRight className="ml-2 w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
+      </section>
+    </main>
   );
 }

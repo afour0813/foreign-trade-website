@@ -26,6 +26,7 @@ const eslintConfig = defineConfig([
     rules: {
       'react-hooks/set-state-in-effect': 'off',
       'no-restricted-syntax': ['error', ...syntaxRules],
+      '@typescript-eslint/no-require-imports': 'off',
     },
   },
   {

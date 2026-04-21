@@ -1,65 +1,144 @@
-# 项目上下文
+# Sunny Hair Bows - Project Documentation
 
-### 版本技术栈
+## Project Overview
+
+A B2B e-commerce website for children's hair accessories manufacturer, featuring a public-facing website and an admin management system.
+
+## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **Core**: React 19
 - **Language**: TypeScript 5
-- **UI 组件**: shadcn/ui (基于 Radix UI)
+- **UI Components**: shadcn/ui (based on Radix UI)
 - **Styling**: Tailwind CSS 4
+- **Database**: PostgreSQL (via Supabase)
+- **ORM**: Drizzle
 
-## 目录结构
+## Directory Structure
 
 ```
-├── public/                 # 静态资源
-├── scripts/                # 构建与启动脚本
-│   ├── build.sh            # 构建脚本
-│   ├── dev.sh              # 开发环境启动脚本
-│   ├── prepare.sh          # 预处理脚本
-│   └── start.sh            # 生产环境启动脚本
-├── src/
-│   ├── app/                # 页面路由与布局
-│   ├── components/ui/      # Shadcn UI 组件库
-│   ├── hooks/              # 自定义 Hooks
-│   ├── lib/                # 工具库
-│   │   └── utils.ts        # 通用工具函数 (cn)
-│   └── server.ts           # 自定义服务端入口
-├── next.config.ts          # Next.js 配置
-├── package.json            # 项目依赖管理
-└── tsconfig.json           # TypeScript 配置
+src/
+├── app/                          # Next.js App Router pages
+│   ├── page.tsx                  # Homepage
+│   ├── layout.tsx                # Root layout
+│   ├── products/                 # Products pages
+│   │   ├── page.tsx              # Products listing
+│   │   └── [slug]/page.tsx       # Product detail
+│   ├── about/page.tsx            # About Us page
+│   ├── contact/page.tsx          # Contact Us page
+│   ├── admin/                    # Admin panel
+│   │   ├── layout.tsx            # Admin layout
+│   │   ├── page.tsx             # Dashboard
+│   │   ├── login/page.tsx       # Admin login
+│   │   ├── register/page.tsx    # Admin registration
+│   │   ├── products/             # Product management
+│   │   ├── categories/          # Category management
+│   │   ├── banners/              # Banner management
+│   │   └── settings/             # Site settings
+│   └── api/                      # API routes
+│       ├── home/route.ts         # Homepage data
+│       ├── products/route.ts     # Products API
+│       ├── categories/route.ts   # Categories API
+│       ├── site/route.ts         # Site info API
+│       └── admin/                # Admin APIs
+│           ├── auth/route.ts     # Authentication
+│           ├── register/route.ts # User registration
+│           ├── products/route.ts # Product CRUD
+│           ├── categories/route.ts # Category CRUD
+│           ├── banners/route.ts  # Banner CRUD
+│           └── settings/route.ts # Settings API
+├── components/                   # React components
+│   ├── ui/                       # shadcn/ui components
+│   ├── Header.tsx                # Site header
+│   ├── Footer.tsx                # Site footer
+│   ├── BannerCarousel.tsx        # Homepage banner
+│   ├── ProductCard.tsx           # Product card
+│   ├── CategoryCard.tsx          # Category card
+│   └── admin/                    # Admin components
+│       └── AdminLayout.tsx       # Admin layout
+├── lib/                          # Utilities
+│   └── db.ts                     # Database operations
+└── storage/database/             # Database configuration
+    ├── shared/schema.ts          # Database schema
+    └── supabase-client.ts        # Supabase client
 ```
 
-- 项目文件（如 app 目录、pages 目录、components 等）默认初始化到 `src/` 目录下。
+## Database Schema
 
-## 包管理规范
+### Tables
 
-**仅允许使用 pnpm** 作为包管理器，**严禁使用 npm 或 yarn**。
-**常用命令**：
-- 安装依赖：`pnpm add <package>`
-- 安装开发依赖：`pnpm add -D <package>`
-- 安装所有依赖：`pnpm install`
-- 移除依赖：`pnpm remove <package>`
+- **admin_users**: Admin user accounts
+  - id, username, password, email, is_active, created_at, updated_at
 
-## 开发规范
+- **categories**: Product categories
+  - id, name, slug, description, image_url, parent_id, sort_order, is_active, created_at, updated_at
 
-### 编码规范
+- **products**: Products
+  - id, name, slug, description, price, category_id, images (JSON), is_featured, is_active, sort_order, min_order, material, size, color, packaging, moq, created_at, updated_at
 
-- 默认按 TypeScript `strict` 心智写代码；优先复用当前作用域已声明的变量、函数、类型和导入，禁止引用未声明标识符或拼错变量名。
-- 禁止隐式 `any` 和 `as any`；函数参数、返回值、解构项、事件对象、`catch` 错误在使用前应有明确类型或先完成类型收窄，并清理未使用的变量和导入。
+- **banners**: Homepage banners
+  - id, title, image_url, link_url, description, sort_order, is_active, created_at, updated_at
 
-### next.config 配置规范
+- **site_settings**: Key-value site settings
+  - id, key, value, description, created_at, updated_at
 
-- 配置的路径不要写死绝对路径，必须使用 path.resolve(__dirname, ...)、import.meta.dirname 或 process.cwd() 动态拼接。
+- **contact_info**: Company contact information
+  - id, address, phone, email, whatsapp, wechat, skype, working_hours, created_at, updated_at
 
-### Hydration 问题防范
+## Development Commands
 
-1. 严禁在 JSX 渲染逻辑中直接使用 typeof window、Date.now()、Math.random() 等动态数据。**必须使用 'use client' 并配合 useEffect + useState 确保动态内容仅在客户端挂载后渲染**；同时严禁非法 HTML 嵌套（如 <p> 嵌套 <div>）。
-2. **禁止使用 head 标签**，优先使用 metadata，详见文档：https://nextjs.org/docs/app/api-reference/functions/generate-metadata
-   1. 三方 CSS、字体等资源可在 `globals.css` 中顶部通过 `@import` 引入或使用 next/font
-   2. preload, preconnect, dns-prefetch 通过 ReactDOM 的 preload、preconnect、dns-prefetch 方法引入
-   3. json-ld 可阅读 https://nextjs.org/docs/app/guides/json-ld
+```bash
+# Install dependencies
+pnpm install
 
-## UI 设计与组件规范 (UI & Styling Standards)
+# Start development server
+pnpm dev
 
-- 模板默认预装核心组件库 `shadcn/ui`，位于`src/components/ui/`目录下
-- Next.js 项目**必须默认**采用 shadcn/ui 组件、风格和规范，**除非用户指定用其他的组件和规范。**
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+
+# Run linter
+pnpm lint
+```
+
+## Environment Variables
+
+The project uses Supabase for database, which is configured automatically by the Coze platform.
+
+## Key Features
+
+### Public Website
+- Homepage with banner carousel, categories, and featured products
+- Product listing with category filtering and search
+- Product detail pages with full specifications
+- About Us page
+- Contact Us page with inquiry form
+
+### Admin Panel
+- Authentication system (login/register)
+- Dashboard with statistics
+- Product management (CRUD)
+- Category management (CRUD)
+- Banner management (CRUD)
+- Site settings management (contact info, about us content)
+
+## API Endpoints
+
+### Public APIs
+- `GET /api/home` - Homepage data (banners, categories, featured products)
+- `GET /api/products` - List products (supports category and slug filters)
+- `GET /api/categories` - List categories
+- `GET /api/site` - Site info and contact details
+
+### Admin APIs
+- `POST /api/admin/auth` - Login
+- `DELETE /api/admin/auth` - Logout
+- `GET /api/admin/auth` - Check authentication
+- `POST /api/admin/register` - Register admin user
+- `GET/POST/PUT/DELETE /api/admin/products` - Product CRUD
+- `GET/POST/PUT/DELETE /api/admin/categories` - Category CRUD
+- `GET/POST/PUT/DELETE /api/admin/banners` - Banner CRUD
+- `GET/POST /api/admin/settings` - Site settings
