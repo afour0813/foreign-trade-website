@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Inspector } from 'react-dev-inspector';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { I18nProvider } from '@/lib/i18n';
+import { LocaleSync } from '@/components/LocaleSync';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -33,13 +33,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
-
   return (
-    <html lang="en">
-      <body className="antialiased min-h-screen flex flex-col">
+    <html lang="en" suppressHydrationWarning>
+      <body className="antialiased min-h-screen flex flex-col" suppressHydrationWarning>
         <I18nProvider>
-          {isDev && <Inspector />}
+          <LocaleSync />
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
