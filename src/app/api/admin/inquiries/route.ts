@@ -1,13 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getInquiries, getInquiryById, updateInquiry, deleteInquiry } from '@/lib/db';
-
-function isAdmin(request: Request): boolean {
-  const cookie = request.headers.get('cookie') || '';
-  return cookie.includes('admin_session=true');
-}
+import { checkAdminAuth } from '@/lib/admin-auth';
 
 export async function GET(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -33,7 +29,7 @@ export async function GET(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -57,7 +53,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

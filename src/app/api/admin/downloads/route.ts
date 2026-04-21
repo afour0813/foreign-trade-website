@@ -1,24 +1,20 @@
 import { NextResponse } from 'next/server';
 import { getDownloads, createDownload, updateDownload, deleteDownload, incrementDownloadCount } from '@/lib/db';
-
-function isAdmin(request: Request): boolean {
-  const cookie = request.headers.get('cookie') || '';
-  return cookie.includes('admin_session=true');
-}
+import { checkAdminAuth } from '@/lib/admin-auth';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const category = searchParams.get('category') || undefined;
+    const isAdminUser = await checkAdminAuth();
 
-    if (!isAdmin(request)) {
-      // Public access - only active downloads
+    if (isAdminUser) {
+      const downloads = await getDownloads({ category });
+      return NextResponse.json(downloads);
+    } else {
       const downloads = await getDownloads({ category, active: true });
       return NextResponse.json(downloads);
     }
-
-    const downloads = await getDownloads({ category });
-    return NextResponse.json(downloads);
   } catch (error) {
     console.error('Error fetching downloads:', error);
     return NextResponse.json({ error: 'Failed to fetch downloads' }, { status: 500 });
@@ -26,7 +22,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -50,10 +46,6 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!isAdmin(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
   try {
     const data = await request.json();
     const { id, ...updateData } = data;
@@ -62,10 +54,15 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: 'Download ID is required' }, { status: 400 });
     }
 
-    // If this is a download count increment (public)
+    // If this is a download count increment (public, no auth needed)
     if (updateData.action === 'increment') {
       await incrementDownloadCount(id);
       return NextResponse.json({ success: true });
+    }
+
+    // Admin operations require auth
+    if (!(await checkAdminAuth())) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const download = await updateDownload(id, {
@@ -86,7 +83,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 

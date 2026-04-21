@@ -242,8 +242,12 @@ export async function saveContactInfo(info: Partial<ContactInfo>) {
 }
 
 // 新闻 API
-export async function getNews(options?: { category?: string; limit?: number; offset?: number }) {
-  let query = client.from('news').select('*').eq('is_active', true);
+export async function getNews(options?: { category?: string; limit?: number; offset?: number; activeOnly?: boolean }) {
+  let query = client.from('news').select('*');
+
+  if (options?.activeOnly !== false) {
+    query = query.eq('is_active', true);
+  }
 
   if (options?.category) {
     query = query.eq('category', options.category);

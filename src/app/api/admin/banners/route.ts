@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getBanners, createBanner, updateBanner, deleteBanner } from '@/lib/db';
+import { checkAdminAuth } from '@/lib/admin-auth';
 
 export async function GET() {
+  if (!(await checkAdminAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const banners = await getBanners();
     return NextResponse.json(banners);
@@ -12,6 +16,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await checkAdminAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const data = await request.json();
     
@@ -39,6 +46,9 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  if (!(await checkAdminAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const data = await request.json();
     const id = data.id;
@@ -64,6 +74,9 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  if (!(await checkAdminAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');

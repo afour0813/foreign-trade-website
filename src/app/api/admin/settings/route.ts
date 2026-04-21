@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getContactInfo, saveContactInfo, getAllSiteSettings, upsertSiteSetting } from '@/lib/db';
+import { checkAdminAuth } from '@/lib/admin-auth';
 
 export async function GET() {
+  if (!(await checkAdminAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const [contactInfo, siteSettings] = await Promise.all([
       getContactInfo(),
@@ -25,6 +29,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await checkAdminAuth())) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
   try {
     const data = await request.json();
     

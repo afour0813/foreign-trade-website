@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCategoryBySlug, createCategory, updateCategory, deleteCategory } from '@/lib/db';
+import { checkAdminAuth } from '@/lib/admin-auth';
 
 export async function GET(request: NextRequest) {
+  if (!(await checkAdminAuth())) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
   try {
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');
@@ -37,6 +39,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (!(await checkAdminAuth())) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
   try {
     const data = await request.json();
     
@@ -65,6 +68,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  if (!(await checkAdminAuth())) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
   try {
     const data = await request.json();
     const id = data.id;
@@ -91,6 +95,7 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  if (!(await checkAdminAuth())) { return NextResponse.json({ error: 'Unauthorized' }, { status: 401 }); }
   try {
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get('id');

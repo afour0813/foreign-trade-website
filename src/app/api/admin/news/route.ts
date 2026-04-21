@@ -1,14 +1,9 @@
 import { NextResponse } from 'next/server';
 import { getNews, getNewsById, createNews, updateNews, deleteNews } from '@/lib/db';
-
-// Check admin auth cookie
-function isAdmin(request: Request): boolean {
-  const cookie = request.headers.get('cookie') || '';
-  return cookie.includes('admin_session=true');
-}
+import { checkAdminAuth } from '@/lib/admin-auth';
 
 export async function GET(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -24,7 +19,7 @@ export async function GET(request: Request) {
       return NextResponse.json(newsItem);
     }
 
-    const newsList = await getNews({});
+    const newsList = await getNews({ activeOnly: false });
     return NextResponse.json(newsList);
   } catch (error) {
     console.error('Error fetching news:', error);
@@ -33,7 +28,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -57,7 +52,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -87,7 +82,7 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
-  if (!isAdmin(request)) {
+  if (!(await checkAdminAuth())) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
