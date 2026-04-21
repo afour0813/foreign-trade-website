@@ -52,7 +52,7 @@ export function BannerCarousel() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome to Sunny Hair Bows
+              Welcome to annahairbows
             </h1>
             <p className="text-xl md:text-2xl">
               High Quality Children&apos;s Hair Accessories

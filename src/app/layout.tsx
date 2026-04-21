@@ -6,8 +6,8 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: {
-    default: 'Sunny Hair Bows - Children\'s Hair Accessories Manufacturer',
-    template: '%s | Sunny Hair Bows',
+    default: 'annahairbows - Children\'s Hair Accessories Manufacturer',
+    template: '%s | annahairbows',
   },
   description:
     'Professional manufacturer of high quality children\'s hair accessories including hair clips, headbands, hair bows, ponytail holders and more. Wholesale and custom orders welcome.',
@@ -19,9 +19,9 @@ export const metadata: Metadata = {
     'baby accessories',
     'wholesale hair accessories',
   ],
-  authors: [{ name: 'Sunny Hair Bows' }],
+  authors: [{ name: 'annahairbows' }],
   openGraph: {
-    title: 'Sunny Hair Bows - Children\'s Hair Accessories Manufacturer',
+    title: 'annahairbows - Children\'s Hair Accessories Manufacturer',
     description: 'Professional manufacturer of high quality children\'s hair accessories',
     type: 'website',
   },

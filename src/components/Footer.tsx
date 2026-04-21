@@ -48,7 +48,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold text-white mb-4">Sunny Hair Bows</h3>
+            <h3 className="text-xl font-bold text-white mb-4">annahairbows</h3>
             <p className="text-sm text-gray-400 leading-relaxed">
               Professional manufacturer of high quality children&apos;s hair accessories. 
               We specialize in hair clips, headbands, hair bows, and more.
@@ -137,7 +137,7 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} Sunny Hair Bows. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} annahairbows. All rights reserved.</p>
         </div>
       </div>
     </footer>
