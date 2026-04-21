@@ -51,10 +51,10 @@ export async function POST(request: NextRequest) {
       name: data.name,
       slug: data.slug,
       description: data.description || null,
-      image_url: data.image_url || null,
-      parent_id: data.parent_id || null,
-      sort_order: data.sort_order || 0,
-      is_active: data.is_active !== false,
+      imageUrl: data.image_url || null,
+      parentId: data.parent_id || null,
+      sortOrder: data.sort_order || 0,
+      isActive: data.is_active !== false,
     });
 
     return NextResponse.json(category);
@@ -77,10 +77,10 @@ export async function PUT(request: NextRequest) {
       name: data.name,
       slug: data.slug,
       description: data.description,
-      image_url: data.image_url,
-      parent_id: data.parent_id,
-      sort_order: data.sort_order,
-      is_active: data.is_active,
+      imageUrl: data.image_url,
+      parentId: data.parent_id,
+      sortOrder: data.sort_order,
+      isActive: data.is_active,
     });
 
     return NextResponse.json(category);

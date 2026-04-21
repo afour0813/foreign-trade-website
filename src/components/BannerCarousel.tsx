@@ -48,7 +48,7 @@ export function BannerCarousel() {
 
   if (banners.length === 0) {
     return (
-      <div className="relative h-[400px] md:h-[500px] bg-gradient-to-r from-pink-400 to-pink-600">
+      <div className="relative h-[400px] md:h-[500px] bg-gradient-to-r from-orange-400 to-orange-600">
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">

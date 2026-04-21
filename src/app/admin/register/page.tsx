@@ -95,10 +95,10 @@ export default function AdminRegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-pink-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-pink-500">Create Admin Account</CardTitle>
+          <CardTitle className="text-2xl font-bold text-orange-500">Create Admin Account</CardTitle>
           <CardDescription>
             Set up your admin account to manage the website
           </CardDescription>
@@ -166,7 +166,7 @@ export default function AdminRegisterPage() {
 
             <Button 
               type="submit" 
-              className="w-full bg-pink-500 hover:bg-pink-600"
+              className="w-full bg-orange-500 hover:bg-orange-600"
               disabled={loading || !!success}
             >
               {loading ? 'Creating Account...' : 'Create Account'}
@@ -174,7 +174,7 @@ export default function AdminRegisterPage() {
           </form>
 
           <div className="mt-6 text-center text-sm text-gray-500">
-            <p>Already have an account? <a href="/admin/login" className="text-pink-500 hover:underline">Login here</a></p>
+            <p>Already have an account? <a href="/admin/login" className="text-orange-500 hover:underline">Login here</a></p>
           </div>
         </CardContent>
       </Card>

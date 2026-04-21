@@ -71,10 +71,10 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 to-pink-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-orange-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold text-pink-500">Admin Login</CardTitle>
+          <CardTitle className="text-2xl font-bold text-orange-500">Admin Login</CardTitle>
           <CardDescription>
             Enter your credentials to access the admin panel
           </CardDescription>
@@ -113,7 +113,7 @@ export default function AdminLoginPage() {
 
             <Button 
               type="submit" 
-              className="w-full bg-pink-500 hover:bg-pink-600"
+              className="w-full bg-orange-500 hover:bg-orange-600"
               disabled={loading}
             >
               {loading ? 'Logging in...' : 'Login'}

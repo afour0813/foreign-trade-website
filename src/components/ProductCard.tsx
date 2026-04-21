@@ -38,11 +38,11 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </div>
         <CardContent className="p-4">
-          <h3 className="font-medium text-gray-800 group-hover:text-pink-500 transition-colors line-clamp-2">
+          <h3 className="font-medium text-gray-800 group-hover:text-orange-500 transition-colors line-clamp-2">
             {product.name}
           </h3>
           {product.price && (
-            <p className="text-pink-500 font-semibold mt-2">
+            <p className="text-orange-500 font-semibold mt-2">
               {product.price}
             </p>
           )}

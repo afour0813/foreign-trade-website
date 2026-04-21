@@ -82,7 +82,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
           The product you are looking for does not exist or has been removed.
         </p>
         <Link href="/products">
-          <Button className="bg-pink-500 hover:bg-pink-600">Back to Products</Button>
+          <Button className="bg-orange-500 hover:bg-orange-600">Back to Products</Button>
         </Link>
       </div>
     );
@@ -97,11 +97,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
       <div className="bg-gray-50 py-4">
         <div className="container mx-auto px-4">
           <nav className="flex items-center gap-2 text-sm">
-            <Link href="/" className="text-gray-500 hover:text-pink-500">
+            <Link href="/" className="text-gray-500 hover:text-orange-500">
               Home
             </Link>
             <span className="text-gray-400">/</span>
-            <Link href="/products" className="text-gray-500 hover:text-pink-500">
+            <Link href="/products" className="text-gray-500 hover:text-orange-500">
               Products
             </Link>
             {product.categories && (
@@ -109,7 +109,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 <span className="text-gray-400">/</span>
                 <Link
                   href={`/products?category=${product.categories.slug}`}
-                  className="text-gray-500 hover:text-pink-500"
+                  className="text-gray-500 hover:text-orange-500"
                 >
                   {product.categories.name}
                 </Link>
@@ -143,8 +143,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                     onClick={() => setSelectedImage(index)}
                     className={`relative w-20 h-20 flex-shrink-0 rounded-md overflow-hidden border-2 transition-colors ${
                       selectedImage === index
-                        ? 'border-pink-500'
-                        : 'border-gray-200 hover:border-pink-300'
+                        ? 'border-orange-500'
+                        : 'border-gray-200 hover:border-orange-300'
                     }`}
                   >
                     <Image
@@ -164,7 +164,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             <h1 className="text-3xl font-bold text-gray-800 mb-4">{product.name}</h1>
             
             {product.price && (
-              <p className="text-2xl text-pink-500 font-bold mb-6">{product.price}</p>
+              <p className="text-2xl text-orange-500 font-bold mb-6">{product.price}</p>
             )}
 
             {/* Product Details */}
@@ -174,7 +174,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                   <span className="w-24 text-gray-500">Category:</span>
                   <Link
                     href={`/products?category=${product.categories.slug}`}
-                    className="text-pink-500 hover:underline"
+                    className="text-orange-500 hover:underline"
                   >
                     {product.categories.name}
                   </Link>
@@ -221,7 +221,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             )}
 
             {/* Inquiry Button */}
-            <div className="bg-pink-50 rounded-lg p-6">
+            <div className="bg-orange-50 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-800 mb-4">Interested in this product?</h3>
               <p className="text-gray-600 mb-4">
                 Contact us for wholesale pricing, custom orders, and sample requests.
@@ -230,7 +230,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 {contactInfo?.email && (
                   <p className="text-gray-600">
                     <span className="font-medium">Email:</span>{' '}
-                    <a href={`mailto:${contactInfo.email}`} className="text-pink-500 hover:underline">
+                    <a href={`mailto:${contactInfo.email}`} className="text-orange-500 hover:underline">
                       {contactInfo.email}
                     </a>
                   </p>
@@ -238,14 +238,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 {contactInfo?.phone && (
                   <p className="text-gray-600">
                     <span className="font-medium">Phone:</span>{' '}
-                    <a href={`tel:${contactInfo.phone}`} className="text-pink-500 hover:underline">
+                    <a href={`tel:${contactInfo.phone}`} className="text-orange-500 hover:underline">
                       {contactInfo.phone}
                     </a>
                   </p>
                 )}
               </div>
               <Link href="/contact">
-                <Button className="w-full bg-pink-500 hover:bg-pink-600">
+                <Button className="w-full bg-orange-500 hover:bg-orange-600">
                   Send Inquiry
                 </Button>
               </Link>

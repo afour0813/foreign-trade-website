@@ -89,12 +89,12 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen">
       {/* Page Header */}
-      <div className="bg-pink-500 text-white py-12">
+      <div className="bg-orange-500 text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold mb-2">
             {currentCategory?.name || 'All Products'}
           </h1>
-          <p className="text-pink-100">
+          <p className="text-orange-100">
             {currentCategory?.description || 'Browse our complete collection of hair accessories'}
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function ProductsPage() {
                     href="/products"
                     className={`block px-3 py-2 rounded-md transition-colors ${
                       !categorySlug 
-                        ? 'bg-pink-100 text-pink-600 font-medium' 
+                        ? 'bg-orange-100 text-orange-600 font-medium' 
                         : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
@@ -125,7 +125,7 @@ export default function ProductsPage() {
                       href={`/products?category=${cat.slug}`}
                       className={`block px-3 py-2 rounded-md transition-colors ${
                         categorySlug === cat.slug
-                          ? 'bg-pink-100 text-pink-600 font-medium'
+                          ? 'bg-orange-100 text-orange-600 font-medium'
                           : 'text-gray-600 hover:bg-gray-100'
                       }`}
                     >
@@ -178,7 +178,7 @@ export default function ProductsPage() {
                   <Button
                     variant="link"
                     onClick={() => setSearchTerm('')}
-                    className="text-pink-500 mt-2"
+                    className="text-orange-500 mt-2"
                   >
                     Clear search
                   </Button>

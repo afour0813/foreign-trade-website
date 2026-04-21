@@ -29,13 +29,13 @@ export function CategoryCard({ category }: CategoryCardProps) {
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-pink-100">
+            <div className="absolute inset-0 flex items-center justify-center bg-orange-100">
               <span className="text-4xl">🎀</span>
             </div>
           )}
         </div>
         <CardContent className="p-4 text-center">
-          <h3 className="font-medium text-gray-800 group-hover:text-pink-500 transition-colors">
+          <h3 className="font-medium text-gray-800 group-hover:text-orange-500 transition-colors">
             {category.name}
           </h3>
           {category.description && (

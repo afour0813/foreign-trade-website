@@ -233,7 +233,7 @@ export default function EditCategoryPage({ params }: { params: Promise<{ id: str
               Cancel
             </Button>
           </Link>
-          <Button type="submit" className="bg-pink-500 hover:bg-pink-600" disabled={saving}>
+          <Button type="submit" className="bg-orange-500 hover:bg-orange-600" disabled={saving}>
             {saving ? 'Saving...' : (
               <>
                 <Save className="w-4 h-4 mr-2" />

@@ -204,7 +204,7 @@ export default function AdminBannersPage() {
           <h1 className="text-2xl font-bold text-gray-800">Banners</h1>
           <p className="text-gray-500">Manage homepage banners ({banners.length})</p>
         </div>
-        <Button className="bg-pink-500 hover:bg-pink-600" onClick={() => handleOpenDialog()}>
+        <Button className="bg-orange-500 hover:bg-orange-600" onClick={() => handleOpenDialog()}>
           <Plus className="w-4 h-4 mr-2" />
           Add Banner
         </Button>
@@ -388,7 +388,7 @@ export default function AdminBannersPage() {
               <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit" className="bg-pink-500 hover:bg-pink-600" disabled={saving}>
+              <Button type="submit" className="bg-orange-500 hover:bg-orange-600" disabled={saving}>
                 {saving ? 'Saving...' : (
                   <>
                     <Save className="w-4 h-4 mr-2" />

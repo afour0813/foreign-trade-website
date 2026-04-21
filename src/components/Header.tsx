@@ -45,7 +45,7 @@ export function Header() {
   return (
     <header className="bg-white shadow-sm">
       {/* Top bar */}
-      <div className="bg-pink-500 text-white py-2">
+      <div className="bg-orange-500 text-white py-2">
         <div className="container mx-auto px-4 flex justify-between items-center text-sm">
           <div className="flex items-center gap-4">
             {contactInfo?.phone && (
@@ -69,21 +69,21 @@ export function Header() {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <span className="text-2xl font-bold text-pink-500">Sunny Hair Bows</span>
+            <span className="text-2xl font-bold text-orange-500">Sunny Hair Bows</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
-            <Link href="/" className="text-gray-700 hover:text-pink-500 font-medium transition-colors">
+            <Link href="/" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               Home
             </Link>
-            <Link href="/products" className="text-gray-700 hover:text-pink-500 font-medium transition-colors">
+            <Link href="/products" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               Products
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-pink-500 font-medium transition-colors">
+            <Link href="/about" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               About Us
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-pink-500 font-medium transition-colors">
+            <Link href="/contact" className="text-gray-700 hover:text-orange-500 font-medium transition-colors">
               Contact Us
             </Link>
           </nav>
@@ -99,28 +99,28 @@ export function Header() {
               <nav className="flex flex-col gap-4 mt-8">
                 <Link 
                   href="/" 
-                  className="text-gray-700 hover:text-pink-500 font-medium py-2"
+                  className="text-gray-700 hover:text-orange-500 font-medium py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   Home
                 </Link>
                 <Link 
                   href="/products" 
-                  className="text-gray-700 hover:text-pink-500 font-medium py-2"
+                  className="text-gray-700 hover:text-orange-500 font-medium py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   Products
                 </Link>
                 <Link 
                   href="/about" 
-                  className="text-gray-700 hover:text-pink-500 font-medium py-2"
+                  className="text-gray-700 hover:text-orange-500 font-medium py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   About Us
                 </Link>
                 <Link 
                   href="/contact" 
-                  className="text-gray-700 hover:text-pink-500 font-medium py-2"
+                  className="text-gray-700 hover:text-orange-500 font-medium py-2"
                   onClick={() => setIsOpen(false)}
                 >
                   Contact Us
@@ -132,7 +132,7 @@ export function Header() {
                       <Link
                         key={cat.id}
                         href={`/products?category=${cat.slug}`}
-                        className="block py-2 text-gray-600 hover:text-pink-500"
+                        className="block py-2 text-gray-600 hover:text-orange-500"
                         onClick={() => setIsOpen(false)}
                       >
                         {cat.name}

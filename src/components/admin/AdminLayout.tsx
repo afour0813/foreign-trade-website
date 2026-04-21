@@ -91,7 +91,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0">
                 <div className="p-4 border-b">
-                  <h2 className="font-bold text-lg text-pink-500">Admin Panel</h2>
+                  <h2 className="font-bold text-lg text-orange-500">Admin Panel</h2>
                 </div>
                 <nav className="p-4 space-y-1">
                   {navItems.map((item) => {
@@ -104,7 +104,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                         onClick={() => setIsOpen(false)}
                         className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
                           isActive
-                            ? 'bg-pink-50 text-pink-600'
+                            ? 'bg-orange-50 text-orange-600'
                             : 'text-gray-600 hover:bg-gray-100'
                         }`}
                       >
@@ -117,7 +117,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               </SheetContent>
             </Sheet>
             
-            <Link href="/admin" className="font-bold text-xl text-pink-500">
+            <Link href="/admin" className="font-bold text-xl text-orange-500">
               Admin Panel
             </Link>
           </div>
@@ -126,7 +126,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             <Link 
               href="/" 
               target="_blank"
-              className="text-sm text-gray-500 hover:text-pink-500"
+              className="text-sm text-gray-500 hover:text-orange-500"
             >
               View Website
             </Link>
@@ -161,7 +161,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                   href={item.href}
                   className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
                     isActive
-                      ? 'bg-pink-50 text-pink-600'
+                      ? 'bg-orange-50 text-orange-600'
                       : 'text-gray-600 hover:bg-gray-100'
                   }`}
                 >

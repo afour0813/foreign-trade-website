@@ -173,7 +173,7 @@ export default function AdminProductsPage() {
           <p className="text-gray-500">Manage your products ({products.length})</p>
         </div>
         <Link href="/admin/products/new">
-          <Button className="bg-pink-500 hover:bg-pink-600">
+          <Button className="bg-orange-500 hover:bg-orange-600">
             <Plus className="w-4 h-4 mr-2" />
             Add Product
           </Button>

@@ -60,22 +60,22 @@ export function Footer() {
             <h4 className="text-lg font-semibold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="hover:text-pink-400 transition-colors">
+                <Link href="/" className="hover:text-orange-400 transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/products" className="hover:text-pink-400 transition-colors">
+                <Link href="/products" className="hover:text-orange-400 transition-colors">
                   Products
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-pink-400 transition-colors">
+                <Link href="/about" className="hover:text-orange-400 transition-colors">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-pink-400 transition-colors">
+                <Link href="/contact" className="hover:text-orange-400 transition-colors">
                   Contact Us
                 </Link>
               </li>
@@ -90,7 +90,7 @@ export function Footer() {
                 <li key={cat.id}>
                   <Link 
                     href={`/products?category=${cat.slug}`} 
-                    className="hover:text-pink-400 transition-colors"
+                    className="hover:text-orange-400 transition-colors"
                   >
                     {cat.name}
                   </Link>
@@ -105,29 +105,29 @@ export function Footer() {
             <ul className="space-y-3">
               {contactInfo?.address && (
                 <li className="flex items-start gap-2">
-                  <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-pink-400" />
+                  <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-orange-400" />
                   <span className="text-sm">{contactInfo.address}</span>
                 </li>
               )}
               {contactInfo?.phone && (
                 <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 flex-shrink-0 text-pink-400" />
-                  <a href={`tel:${contactInfo.phone}`} className="text-sm hover:text-pink-400">
+                  <Phone className="w-4 h-4 flex-shrink-0 text-orange-400" />
+                  <a href={`tel:${contactInfo.phone}`} className="text-sm hover:text-orange-400">
                     {contactInfo.phone}
                   </a>
                 </li>
               )}
               {contactInfo?.email && (
                 <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 flex-shrink-0 text-pink-400" />
-                  <a href={`mailto:${contactInfo.email}`} className="text-sm hover:text-pink-400">
+                  <Mail className="w-4 h-4 flex-shrink-0 text-orange-400" />
+                  <a href={`mailto:${contactInfo.email}`} className="text-sm hover:text-orange-400">
                     {contactInfo.email}
                   </a>
                 </li>
               )}
               {contactInfo?.working_hours && (
                 <li className="flex items-center gap-2">
-                  <Clock className="w-4 h-4 flex-shrink-0 text-pink-400" />
+                  <Clock className="w-4 h-4 flex-shrink-0 text-orange-400" />
                   <span className="text-sm">{contactInfo.working_hours}</span>
                 </li>
               )}

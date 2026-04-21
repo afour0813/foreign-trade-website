@@ -16,6 +16,7 @@ interface ContactInfo {
   wechat?: string;
   skype?: string;
   working_hours?: string;
+  [key: string]: string | undefined;
 }
 
 export default function ContactPage() {
@@ -64,7 +65,10 @@ export default function ContactPage() {
   const defaultContact = {
     address: '#70 BLDG, XIANGFU SANLI ROAD, XIANG\'AN DISTRICT 361101, XIAMEN, FUJIAN, CHINA',
     phone: '86-18250858312',
-    email: 'sales@xmsunnyhairbows.com',
+    email: 'enqi@qqq.com',
+    whatsapp: '',
+    wechat: '',
+    skype: '',
     working_hours: 'Mon - Fri: 9:00 AM - 6:00 PM (GMT+8)',
   };
 
@@ -73,10 +77,10 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-pink-500 to-pink-600 text-white py-16">
+      <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-          <p className="text-pink-100 text-lg">
+          <p className="text-orange-100 text-lg">
             Get in touch with us for inquiries, orders, or any questions
           </p>
         </div>
@@ -91,8 +95,8 @@ export default function ContactPage() {
             <div className="space-y-6">
               <Card>
                 <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-5 h-5 text-pink-500" />
+                  <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Address</h3>
@@ -103,12 +107,12 @@ export default function ContactPage() {
 
               <Card>
                 <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-5 h-5 text-pink-500" />
+                  <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Phone</h3>
-                    <a href={`tel:${info.phone}`} className="text-pink-500 hover:underline text-sm">
+                    <a href={`tel:${info.phone}`} className="text-orange-500 hover:underline text-sm">
                       {info.phone}
                     </a>
                   </div>
@@ -117,12 +121,12 @@ export default function ContactPage() {
 
               <Card>
                 <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-pink-500" />
+                  <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Mail className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
-                    <a href={`mailto:${info.email}`} className="text-pink-500 hover:underline text-sm">
+                    <a href={`mailto:${info.email}`} className="text-orange-500 hover:underline text-sm">
                       {info.email}
                     </a>
                   </div>
@@ -131,8 +135,8 @@ export default function ContactPage() {
 
               <Card>
                 <CardContent className="p-4 flex items-start gap-4">
-                  <div className="w-10 h-10 bg-pink-100 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-5 h-5 text-pink-500" />
+                  <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1">Working Hours</h3>
@@ -142,7 +146,7 @@ export default function ContactPage() {
               </Card>
 
               {/* Quick Contact */}
-              <div className="bg-pink-50 rounded-lg p-6">
+              <div className="bg-orange-50 rounded-lg p-6">
                 <h3 className="font-semibold text-gray-800 mb-4">Quick Contact</h3>
                 <div className="space-y-3">
                   {info.whatsapp && (
@@ -268,7 +272,7 @@ export default function ContactPage() {
 
                     <Button
                       type="submit"
-                      className="w-full bg-pink-500 hover:bg-pink-600"
+                      className="w-full bg-orange-500 hover:bg-orange-600"
                       disabled={submitting}
                     >
                       {submitting ? (
@@ -294,19 +298,19 @@ export default function ContactPage() {
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start gap-2">
-                  <span className="text-pink-500">•</span>
+                  <span className="text-orange-500">•</span>
                   Wholesale prices available for bulk orders
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-pink-500">•</span>
+                  <span className="text-orange-500">•</span>
                   Custom designs and OEM/ODM orders welcome
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-pink-500">•</span>
+                  <span className="text-orange-500">•</span>
                   Sample orders available
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="text-pink-500">•</span>
+                  <span className="text-orange-500">•</span>
                   Fast response within 24 hours
                 </li>
               </ul>

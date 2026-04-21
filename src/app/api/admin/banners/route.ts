@@ -24,11 +24,11 @@ export async function POST(request: NextRequest) {
 
     const banner = await createBanner({
       title: data.title || null,
-      image_url: data.image_url,
-      link_url: data.link_url || null,
+      imageUrl: data.image_url,
+      linkUrl: data.link_url || null,
       description: data.description || null,
-      sort_order: data.sort_order || 0,
-      is_active: data.is_active !== false,
+      sortOrder: data.sort_order || 0,
+      isActive: data.is_active !== false,
     });
 
     return NextResponse.json(banner);
@@ -49,11 +49,11 @@ export async function PUT(request: NextRequest) {
 
     const banner = await updateBanner(id, {
       title: data.title,
-      image_url: data.image_url,
-      link_url: data.link_url,
+      imageUrl: data.image_url,
+      linkUrl: data.link_url,
       description: data.description,
-      sort_order: data.sort_order,
-      is_active: data.is_active,
+      sortOrder: data.sort_order,
+      isActive: data.is_active,
     });
 
     return NextResponse.json(banner);

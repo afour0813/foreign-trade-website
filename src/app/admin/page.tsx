@@ -45,7 +45,7 @@ export default function AdminDashboardPage() {
       value: stats.products,
       icon: Package,
       href: '/admin/products',
-      color: 'bg-pink-500',
+      color: 'bg-orange-500',
     },
     {
       title: 'Categories',
@@ -89,7 +89,7 @@ export default function AdminDashboardPage() {
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                   </div>
-                  <div className="mt-4 flex items-center text-sm text-pink-500">
+                  <div className="mt-4 flex items-center text-sm text-orange-500">
                     <span>Manage {stat.title.toLowerCase()}</span>
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
@@ -111,7 +111,7 @@ export default function AdminDashboardPage() {
               href="/admin/products/new"
               className="flex items-center gap-2 p-3 rounded-md hover:bg-gray-50 transition-colors"
             >
-              <Package className="w-5 h-5 text-pink-500" />
+              <Package className="w-5 h-5 text-orange-500" />
               <span>Add New Product</span>
             </Link>
             <Link
@@ -165,7 +165,7 @@ export default function AdminDashboardPage() {
               <Link
                 href="/"
                 target="_blank"
-                className="text-pink-500 hover:underline text-sm"
+                className="text-orange-500 hover:underline text-sm"
               >
                 View Website
               </Link>

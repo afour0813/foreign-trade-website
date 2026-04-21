@@ -104,7 +104,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     setFormData((prev) => ({ ...prev, [name]: checked }));
   };
 
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImagesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     const imagesArray = value.split('\n').map((url) => url.trim()).filter(Boolean);
     setFormData((prev) => ({ ...prev, images: imagesArray }));
@@ -399,7 +399,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
               Cancel
             </Button>
           </Link>
-          <Button type="submit" className="bg-pink-500 hover:bg-pink-600" disabled={saving}>
+          <Button type="submit" className="bg-orange-500 hover:bg-orange-600" disabled={saving}>
             {saving ? 'Saving...' : (
               <>
                 <Save className="w-4 h-4 mr-2" />

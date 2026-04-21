@@ -60,7 +60,7 @@ export default function HomePage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-pulse text-pink-500">Loading...</div>
+        <div className="animate-pulse text-orange-500">Loading...</div>
       </div>
     );
   }
@@ -88,7 +88,7 @@ export default function HomePage() {
 
           <div className="text-center mt-8">
             <Link href="/products">
-              <Button variant="outline" className="border-pink-500 text-pink-500 hover:bg-pink-50">
+              <Button variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-50">
                 View All Products
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -121,7 +121,7 @@ export default function HomePage() {
 
           <div className="text-center mt-8">
             <Link href="/products">
-              <Button className="bg-pink-500 hover:bg-pink-600 text-white">
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white">
                 View All Products
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -131,7 +131,7 @@ export default function HomePage() {
       </section>
 
       {/* About Preview Section */}
-      <section className="py-16 bg-pink-50">
+      <section className="py-16 bg-orange-50">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -146,14 +146,14 @@ export default function HomePage() {
                 extensively recognized and trusted by customers worldwide.
               </p>
               <Link href="/about">
-                <Button variant="outline" className="border-pink-500 text-pink-500 hover:bg-pink-100">
+                <Button variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-100">
                   Learn More About Us
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </Button>
               </Link>
             </div>
             <div className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-400 to-pink-600 flex items-center justify-center">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
                 <span className="text-6xl">🎀</span>
               </div>
             </div>
@@ -170,7 +170,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">✨</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">High Quality</h3>
@@ -180,7 +180,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🎨</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Stylish Design</h3>
@@ -190,7 +190,7 @@ export default function HomePage() {
             </div>
 
             <div className="text-center p-6">
-              <div className="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🚚</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Fast Shipping</h3>
@@ -203,14 +203,14 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-pink-500 text-white">
+      <section className="py-16 bg-orange-500 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
-          <p className="text-pink-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-orange-100 mb-8 max-w-2xl mx-auto">
             Contact us today for wholesale inquiries, custom orders, or any questions about our products.
           </p>
           <Link href="/contact">
-            <Button variant="secondary" className="bg-white text-pink-500 hover:bg-pink-50">
+            <Button variant="secondary" className="bg-white text-orange-500 hover:bg-orange-50">
               Contact Us Now
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>

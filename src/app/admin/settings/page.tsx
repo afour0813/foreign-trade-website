@@ -268,7 +268,7 @@ export default function AdminSettingsPage() {
         </Card>
 
         <div className="flex justify-end">
-          <Button type="submit" className="bg-pink-500 hover:bg-pink-600" disabled={saving}>
+          <Button type="submit" className="bg-orange-500 hover:bg-orange-600" disabled={saving}>
             {saving ? (
               'Saving...'
             ) : (
