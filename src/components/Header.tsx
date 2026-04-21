@@ -97,17 +97,25 @@ export function Header() {
 
       {/* Main navigation */}
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="flex items-center justify-between h-[72px] lg:h-[88px]">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-3 flex-shrink-0">
             <Image
-              src="/images/logo-annahairbows.jpg"
+              src="/images/logo-icon.jpeg"
               alt="AnnaHairBows"
-              width={180}
-              height={50}
-              className="h-10 lg:h-12 w-auto object-contain"
+              width={48}
+              height={48}
+              className="h-10 w-10 lg:h-12 lg:w-12 rounded-lg object-cover"
               priority
             />
+            <div className="flex flex-col">
+              <span className="text-xl lg:text-2xl font-bold tracking-wide text-gray-800 leading-tight">
+                Anna<span className="text-orange-500">Hair</span>Bows
+              </span>
+              <span className="text-[10px] lg:text-xs text-gray-400 tracking-widest uppercase leading-tight">
+                Children&apos;s Hair Accessories
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
