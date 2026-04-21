@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Download, FileText, ChevronRight } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 interface DownloadItem {
   id: string;
@@ -17,12 +18,13 @@ interface DownloadItem {
 }
 
 const categories = [
-  { value: '', label: 'All' },
-  { value: 'help', label: 'Help Documents' },
-  { value: 'download', label: 'Downloads' },
+  { value: '', labelKey: 'download.all' },
+  { value: 'help', labelKey: 'download.help' },
+  { value: 'download', labelKey: 'download.file' },
 ];
 
 export default function DownloadsPage() {
+  const { t } = useI18n();
   const [downloads, setDownloads] = useState<DownloadItem[]>([]);
   const [activeCategory, setActiveCategory] = useState('');
   const [loading, setLoading] = useState(true);
@@ -66,12 +68,12 @@ export default function DownloadsPage() {
       <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-orange-100 mb-4">
-            <Link href="/" className="hover:text-white">Home</Link>
+            <Link href="/" className="hover:text-white">{t('nav.home')}</Link>
             <ChevronRight className="w-4 h-4" />
-            <span>Download</span>
+            <span>{t('nav.download')}</span>
           </div>
-          <h1 className="text-4xl font-bold">Download Center</h1>
-          <p className="mt-2 text-orange-100">Product catalogs, help documents and resources</p>
+          <h1 className="text-4xl font-bold">{t('download.title')}</h1>
+          <p className="mt-2 text-orange-100">{t('download.subtitle')}</p>
         </div>
       </section>
 
@@ -88,7 +90,7 @@ export default function DownloadsPage() {
                   : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-orange-500 border border-gray-200'
               }`}
             >
-              {cat.label}
+              {t(cat.labelKey)}
             </button>
           ))}
         </div>
@@ -96,7 +98,7 @@ export default function DownloadsPage() {
         {loading ? (
           <div className="text-center py-16 text-gray-400">Loading...</div>
         ) : downloads.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">No downloads available yet.</div>
+          <div className="text-center py-16 text-gray-400">{t('download.noDownloads')}</div>
         ) : (
           <div className="space-y-4 pb-16">
             {downloads.map((item) => (
@@ -139,7 +141,7 @@ export default function DownloadsPage() {
                   }`}
                 >
                   <Download className="w-4 h-4" />
-                  Download
+                  {t('download.button')}
                 </button>
               </div>
             ))}

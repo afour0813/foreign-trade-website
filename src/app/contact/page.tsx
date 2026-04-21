@@ -5,6 +5,7 @@ import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useI18n } from '@/lib/i18n';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -20,6 +21,7 @@ interface ContactInfo {
 }
 
 export default function ContactPage() {
+  const { t } = useI18n();
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [formData, setFormData] = useState({
     name: '',
@@ -58,10 +60,10 @@ export default function ContactPage() {
         setSubmitted(true);
         setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
       } else {
-        alert('Failed to send message. Please try again.');
+        alert(t('contact.submitFailed'));
       }
     } catch {
-      alert('Failed to send message. Please try again.');
+      alert(t('contact.submitFailed'));
     } finally {
       setSubmitting(false);
     }
@@ -84,9 +86,9 @@ export default function ContactPage() {
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+          <h1 className="text-4xl font-bold mb-4">{t('contact.title')}</h1>
           <p className="text-orange-100 text-lg">
-            Get in touch with us for inquiries, orders, or any questions
+            {t('contact.subtitle')}
           </p>
         </div>
       </div>
@@ -95,7 +97,7 @@ export default function ContactPage() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Contact Info */}
           <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Contact Information</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.contactInfo')}</h2>
             
             <div className="space-y-6">
               <Card>
@@ -104,7 +106,7 @@ export default function ContactPage() {
                     <MapPin className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Address</h3>
+                    <h3 className="font-semibold text-gray-800 mb-1">{t('contact.address')}</h3>
                     <p className="text-gray-600 text-sm">{info.address}</p>
                   </div>
                 </CardContent>
@@ -116,7 +118,7 @@ export default function ContactPage() {
                     <Phone className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Phone</h3>
+                    <h3 className="font-semibold text-gray-800 mb-1">{t('contact.phone')}</h3>
                     <a href={`tel:${info.phone}`} className="text-orange-500 hover:underline text-sm">
                       {info.phone}
                     </a>
@@ -130,7 +132,7 @@ export default function ContactPage() {
                     <Mail className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
+                    <h3 className="font-semibold text-gray-800 mb-1">{t('contact.emailLabel')}</h3>
                     <a href={`mailto:${info.email}`} className="text-orange-500 hover:underline text-sm">
                       {info.email}
                     </a>
@@ -144,7 +146,7 @@ export default function ContactPage() {
                     <Clock className="w-5 h-5 text-orange-500" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Working Hours</h3>
+                    <h3 className="font-semibold text-gray-800 mb-1">{t('contact.workingHours')}</h3>
                     <p className="text-gray-600 text-sm">{info.working_hours}</p>
                   </div>
                 </CardContent>
@@ -152,7 +154,7 @@ export default function ContactPage() {
 
               {/* Quick Contact */}
               <div className="bg-orange-50 rounded-lg p-6">
-                <h3 className="font-semibold text-gray-800 mb-4">Quick Contact</h3>
+                <h3 className="font-semibold text-gray-800 mb-4">{t('contact.quickContact')}</h3>
                 <div className="space-y-3">
                   {info.whatsapp && (
                     <a
@@ -187,7 +189,7 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">{t('contact.sendMessage')}</h2>
             
             {submitted ? (
               <Card className="bg-green-50 border-green-200">
@@ -195,16 +197,16 @@ export default function ContactPage() {
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Send className="w-8 h-8 text-green-500" />
                   </div>
-                  <h3 className="text-xl font-semibold text-green-700 mb-2">Message Sent!</h3>
+                  <h3 className="text-xl font-semibold text-green-700 mb-2">{t('contact.messageSent')}</h3>
                   <p className="text-green-600 mb-4">
-                    Thank you for contacting us. We will get back to you as soon as possible.
+                    {t('contact.messageSentDesc')}
                   </p>
                   <Button
                     onClick={() => setSubmitted(false)}
                     variant="outline"
                     className="border-green-500 text-green-600"
                   >
-                    Send Another Message
+                    {t('contact.sendAnother')}
                   </Button>
                 </CardContent>
               </Card>
@@ -214,18 +216,18 @@ export default function ContactPage() {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="name">Your Name *</Label>
+                        <Label htmlFor="name">{t('contact.yourName')} *</Label>
                         <Input
                           id="name"
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
                           required
-                          placeholder="John Doe"
+                          placeholder={t('contact.namePlaceholder')}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="email">Email Address *</Label>
+                        <Label htmlFor="email">{t('contact.emailAddress')} *</Label>
                         <Input
                           id="email"
                           name="email"
@@ -233,37 +235,37 @@ export default function ContactPage() {
                           value={formData.email}
                           onChange={handleChange}
                           required
-                          placeholder="john@example.com"
+                          placeholder={t('contact.emailPlaceholder')}
                         />
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">{t('contact.phoneNumber')}</Label>
                         <Input
                           id="phone"
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
-                          placeholder="+1 234 567 890"
+                          placeholder={t('contact.phonePlaceholder')}
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="subject">Subject *</Label>
+                        <Label htmlFor="subject">{t('contact.subject')} *</Label>
                         <Input
                           id="subject"
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
                           required
-                          placeholder="Product Inquiry"
+                          placeholder={t('contact.subjectPlaceholder')}
                         />
                       </div>
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="message">Message *</Label>
+                      <Label htmlFor="message">{t('contact.message')} *</Label>
                       <Textarea
                         id="message"
                         name="message"
@@ -271,7 +273,7 @@ export default function ContactPage() {
                         onChange={handleChange}
                         required
                         rows={6}
-                        placeholder="Please describe your inquiry..."
+                        placeholder={t('contact.messagePlaceholder')}
                       />
                     </div>
 
@@ -281,11 +283,11 @@ export default function ContactPage() {
                       disabled={submitting}
                     >
                       {submitting ? (
-                        <>Sending...</>
+                        <>{t('contact.sending')}</>
                       ) : (
                         <>
                           <Send className="w-4 h-4 mr-2" />
-                          Send Message
+                          {t('contact.sendBtn')}
                         </>
                       )}
                     </Button>
@@ -296,27 +298,26 @@ export default function ContactPage() {
 
             {/* Additional Info */}
             <div className="mt-8 bg-gray-50 rounded-lg p-6">
-              <h3 className="font-semibold text-gray-800 mb-4">Inquiry For Pricelist</h3>
+              <h3 className="font-semibold text-gray-800 mb-4">{t('contact.inquiryPricelist')}</h3>
               <p className="text-gray-600 text-sm mb-4">
-                We offer excellent, comprehensive customer service every step of the way. 
-                Before you order, make real time inquiries through our contact form.
+                {t('contact.inquiryDesc')}
               </p>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li className="flex items-start gap-2">
                   <span className="text-orange-500">•</span>
-                  Wholesale prices available for bulk orders
+                  {t('contact.benefit1')}
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-orange-500">•</span>
-                  Custom designs and OEM/ODM orders welcome
+                  {t('contact.benefit2')}
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-orange-500">•</span>
-                  Sample orders available
+                  {t('contact.benefit3')}
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-orange-500">•</span>
-                  Fast response within 24 hours
+                  {t('contact.benefit4')}
                 </li>
               </ul>
             </div>

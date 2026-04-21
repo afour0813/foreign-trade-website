@@ -7,6 +7,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useI18n } from '@/lib/i18n';
 
 interface Product {
   id: string;
@@ -29,6 +30,7 @@ interface Category {
 }
 
 export default function ProductsPage() {
+  const { t } = useI18n();
   const searchParams = useSearchParams();
   const categorySlug = searchParams.get('category');
   
@@ -39,7 +41,6 @@ export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    // 获取所有分类
     fetch('/api/categories?parentId=null')
       .then((res) => res.json())
       .then((data) => {
@@ -57,7 +58,6 @@ export default function ProductsPage() {
     if (categorySlug) {
       url += `&category=${categorySlug}`;
       
-      // 获取当前分类信息
       fetch(`/api/categories?slug=${categorySlug}`)
         .then((res) => res.json())
         .then((data) => {
@@ -92,10 +92,10 @@ export default function ProductsPage() {
       <div className="bg-orange-500 text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl font-bold mb-2">
-            {currentCategory?.name || 'All Products'}
+            {currentCategory?.name || t('products.allProducts')}
           </h1>
           <p className="text-orange-100">
-            {currentCategory?.description || 'Browse our complete collection of hair accessories'}
+            {currentCategory?.description || t('products.subtitle')}
           </p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function ProductsPage() {
           {/* Sidebar - Categories */}
           <aside className="lg:w-64 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-sm p-4 sticky top-4">
-              <h3 className="font-semibold text-gray-800 mb-4">Categories</h3>
+              <h3 className="font-semibold text-gray-800 mb-4">{t('products.categories')}</h3>
               <ul className="space-y-2">
                 <li>
                   <Link 
@@ -116,7 +116,7 @@ export default function ProductsPage() {
                         : 'text-gray-600 hover:bg-gray-100'
                     }`}
                   >
-                    All Products
+                    {t('products.allProducts')}
                   </Link>
                 </li>
                 {categories.map((cat) => (
@@ -143,7 +143,7 @@ export default function ProductsPage() {
             <div className="mb-6">
               <Input
                 type="text"
-                placeholder="Search products..."
+                placeholder={t('products.search')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="max-w-md"
@@ -172,7 +172,7 @@ export default function ProductsPage() {
             ) : (
               <div className="text-center py-12">
                 <p className="text-gray-500 text-lg">
-                  No products found.
+                  {t('products.noResults')}
                 </p>
                 {searchTerm && (
                   <Button
@@ -180,7 +180,7 @@ export default function ProductsPage() {
                     onClick={() => setSearchTerm('')}
                     className="text-orange-500 mt-2"
                   >
-                    Clear search
+                    {t('products.clearSearch')}
                   </Button>
                 )}
               </div>

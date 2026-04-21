@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, ArrowRight, ChevronRight } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 interface NewsItem {
   id: string;
@@ -16,12 +17,13 @@ interface NewsItem {
 }
 
 const categories = [
-  { value: '', label: 'All News' },
-  { value: 'company', label: 'Company News' },
-  { value: 'industry', label: 'Industry News' },
+  { value: '', labelKey: 'news.all' },
+  { value: 'company', labelKey: 'news.company' },
+  { value: 'industry', labelKey: 'news.industry' },
 ];
 
 export default function NewsPage() {
+  const { t } = useI18n();
   const [newsList, setNewsList] = useState<NewsItem[]>([]);
   const [activeCategory, setActiveCategory] = useState('');
   const [loading, setLoading] = useState(true);
@@ -50,12 +52,12 @@ export default function NewsPage() {
       <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-orange-100 mb-4">
-            <Link href="/" className="hover:text-white">Home</Link>
+            <Link href="/" className="hover:text-white">{t('nav.home')}</Link>
             <ChevronRight className="w-4 h-4" />
-            <span>News</span>
+            <span>{t('nav.news')}</span>
           </div>
-          <h1 className="text-4xl font-bold">News & Updates</h1>
-          <p className="mt-2 text-orange-100">Stay informed with our latest company and industry news</p>
+          <h1 className="text-4xl font-bold">{t('news.title')}</h1>
+          <p className="mt-2 text-orange-100">{t('news.subtitle')}</p>
         </div>
       </section>
 
@@ -72,7 +74,7 @@ export default function NewsPage() {
                   : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-orange-500 border border-gray-200'
               }`}
             >
-              {cat.label}
+              {t(cat.labelKey)}
             </button>
           ))}
         </div>
@@ -81,7 +83,7 @@ export default function NewsPage() {
         {loading ? (
           <div className="text-center py-16 text-gray-400">Loading...</div>
         ) : newsList.length === 0 ? (
-          <div className="text-center py-16 text-gray-400">No news articles found.</div>
+          <div className="text-center py-16 text-gray-400">{t('news.noNews')}</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-16">
             {newsList.map((item) => (
@@ -121,7 +123,7 @@ export default function NewsPage() {
                     <p className="text-sm text-gray-500 line-clamp-2">{item.summary}</p>
                   )}
                   <div className="mt-4 flex items-center text-orange-500 text-sm font-medium">
-                    Read More <ArrowRight className="w-4 h-4 ml-1" />
+                    {t('news.readMore')} <ArrowRight className="w-4 h-4 ml-1" />
                   </div>
                 </div>
               </Link>

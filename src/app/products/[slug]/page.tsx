@@ -3,9 +3,10 @@
 import { useState, useEffect, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useI18n } from '@/lib/i18n';
 
 interface Product {
   id: string;
@@ -34,6 +35,7 @@ interface ContactInfo {
 
 export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
+  const { t } = useI18n();
   const [product, setProduct] = useState<Product | null>(null);
   const [contactInfo, setContactInfo] = useState<ContactInfo | null>(null);
   const [loading, setLoading] = useState(true);
@@ -77,12 +79,12 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
   if (!product) {
     return (
       <div className="container mx-auto px-4 py-16 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">Product Not Found</h1>
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">{t('products.notFound')}</h1>
         <p className="text-gray-600 mb-8">
-          The product you are looking for does not exist or has been removed.
+          {t('products.notFoundDesc')}
         </p>
         <Link href="/products">
-          <Button className="bg-orange-500 hover:bg-orange-600">Back to Products</Button>
+          <Button className="bg-orange-500 hover:bg-orange-600">{t('products.backToProducts')}</Button>
         </Link>
       </div>
     );
@@ -98,11 +100,11 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
         <div className="container mx-auto px-4">
           <nav className="flex items-center gap-2 text-sm">
             <Link href="/" className="text-gray-500 hover:text-orange-500">
-              Home
+              {t('products.breadcrumb.home')}
             </Link>
             <span className="text-gray-400">/</span>
             <Link href="/products" className="text-gray-500 hover:text-orange-500">
-              Products
+              {t('products.breadcrumb.products')}
             </Link>
             {product.categories && (
               <>
@@ -171,7 +173,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             <div className="space-y-3 mb-8">
               {product.categories && (
                 <div className="flex">
-                  <span className="w-24 text-gray-500">Category:</span>
+                  <span className="w-24 text-gray-500">{t('products.category')}:</span>
                   <Link
                     href={`/products?category=${product.categories.slug}`}
                     className="text-orange-500 hover:underline"
@@ -182,31 +184,31 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               )}
               {product.material && (
                 <div className="flex">
-                  <span className="w-24 text-gray-500">Material:</span>
+                  <span className="w-24 text-gray-500">{t('products.material')}:</span>
                   <span className="text-gray-800">{product.material}</span>
                 </div>
               )}
               {product.size && (
                 <div className="flex">
-                  <span className="w-24 text-gray-500">Size:</span>
+                  <span className="w-24 text-gray-500">{t('products.size')}:</span>
                   <span className="text-gray-800">{product.size}</span>
                 </div>
               )}
               {product.color && (
                 <div className="flex">
-                  <span className="w-24 text-gray-500">Color:</span>
+                  <span className="w-24 text-gray-500">{t('products.color')}:</span>
                   <span className="text-gray-800">{product.color}</span>
                 </div>
               )}
               {product.moq && (
                 <div className="flex">
-                  <span className="w-24 text-gray-500">MOQ:</span>
+                  <span className="w-24 text-gray-500">{t('products.moq')}:</span>
                   <span className="text-gray-800">{product.moq}</span>
                 </div>
               )}
               {product.packaging && (
                 <div className="flex">
-                  <span className="w-24 text-gray-500">Packaging:</span>
+                  <span className="w-24 text-gray-500">{t('products.packaging')}:</span>
                   <span className="text-gray-800">{product.packaging}</span>
                 </div>
               )}
@@ -215,21 +217,21 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
             {/* Description */}
             {product.description && (
               <div className="mb-8">
-                <h2 className="text-lg font-semibold text-gray-800 mb-3">Description</h2>
+                <h2 className="text-lg font-semibold text-gray-800 mb-3">{t('products.description')}</h2>
                 <p className="text-gray-600 whitespace-pre-wrap">{product.description}</p>
               </div>
             )}
 
             {/* Inquiry Button */}
             <div className="bg-orange-50 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Interested in this product?</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('products.interested')}</h3>
               <p className="text-gray-600 mb-4">
-                Contact us for wholesale pricing, custom orders, and sample requests.
+                {t('products.interestedDesc')}
               </p>
               <div className="space-y-2 mb-4">
                 {contactInfo?.email && (
                   <p className="text-gray-600">
-                    <span className="font-medium">Email:</span>{' '}
+                    <span className="font-medium">{t('contact.emailLabel')}:</span>{' '}
                     <a href={`mailto:${contactInfo.email}`} className="text-orange-500 hover:underline">
                       {contactInfo.email}
                     </a>
@@ -237,7 +239,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 )}
                 {contactInfo?.phone && (
                   <p className="text-gray-600">
-                    <span className="font-medium">Phone:</span>{' '}
+                    <span className="font-medium">{t('contact.phone')}:</span>{' '}
                     <a href={`tel:${contactInfo.phone}`} className="text-orange-500 hover:underline">
                       {contactInfo.phone}
                     </a>
@@ -246,7 +248,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
               </div>
               <Link href="/contact">
                 <Button className="w-full bg-orange-500 hover:bg-orange-600">
-                  Send Inquiry
+                  {t('products.inquiry')}
                 </Button>
               </Link>
             </div>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useI18n } from '@/lib/i18n';
 
 interface Banner {
   id: string;
@@ -14,6 +15,7 @@ interface Banner {
 }
 
 export function BannerCarousel() {
+  const { t } = useI18n();
   const [banners, setBanners] = useState<Banner[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -52,10 +54,10 @@ export function BannerCarousel() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Welcome to annahairbows
+              {t('home.banner.welcome')}
             </h1>
             <p className="text-xl md:text-2xl">
-              High Quality Children&apos;s Hair Accessories
+              {t('home.banner.subtitle')}
             </p>
           </div>
         </div>

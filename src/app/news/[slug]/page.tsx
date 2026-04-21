@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, ChevronRight, ArrowLeft, Share2 } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 interface NewsItem {
   id: string;
@@ -17,6 +18,7 @@ interface NewsItem {
 }
 
 export default function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { t } = useI18n();
   const [news, setNews] = useState<NewsItem | null>(null);
   const [relatedNews, setRelatedNews] = useState<NewsItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -64,8 +66,8 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
     return (
       <main className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">News Not Found</h2>
-          <Link href="/news" className="text-orange-500 hover:underline">Back to News</Link>
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">{t('news.notFound')}</h2>
+          <Link href="/news" className="text-orange-500 hover:underline">{t('news.backToNews')}</Link>
         </div>
       </main>
     );
@@ -77,9 +79,9 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
       <section className="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-16">
         <div className="container mx-auto px-4">
           <div className="flex items-center gap-2 text-orange-100 mb-4">
-            <Link href="/" className="hover:text-white">Home</Link>
+            <Link href="/" className="hover:text-white">{t('nav.home')}</Link>
             <ChevronRight className="w-4 h-4" />
-            <Link href="/news" className="hover:text-white">News</Link>
+            <Link href="/news" className="hover:text-white">{t('nav.news')}</Link>
             <ChevronRight className="w-4 h-4" />
             <span>{news.category === 'company' ? 'Company News' : 'Industry News'}</span>
           </div>
@@ -127,10 +129,10 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
                   href="/news"
                   className="flex items-center gap-2 text-orange-500 hover:text-orange-600 font-medium"
                 >
-                  <ArrowLeft className="w-4 h-4" /> Back to News
+                  <ArrowLeft className="w-4 h-4" /> {t('news.backToNews')}
                 </Link>
                 <button className="flex items-center gap-2 text-gray-400 hover:text-orange-500">
-                  <Share2 className="w-4 h-4" /> Share
+                  <Share2 className="w-4 h-4" /> {t('news.share')}
                 </button>
               </div>
             </article>
@@ -141,7 +143,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
             {/* Related News */}
             {relatedNews.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h3 className="font-bold text-lg mb-4 text-gray-800">Related News</h3>
+                <h3 className="font-bold text-lg mb-4 text-gray-800">{t('news.related')}</h3>
                 <div className="space-y-4">
                   {relatedNews.map((item) => (
                     <Link
@@ -167,7 +169,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
 
             {/* Contact Card */}
             <div className="bg-orange-50 rounded-xl p-6">
-              <h3 className="font-bold text-lg mb-3 text-gray-800">Contact Us</h3>
+              <h3 className="font-bold text-lg mb-3 text-gray-800">{t('contact.info.title')}</h3>
               <p className="text-sm text-gray-600 mb-4">
                 Have questions? Get in touch with our team.
               </p>
@@ -175,7 +177,7 @@ export default function NewsDetailPage({ params }: { params: Promise<{ slug: str
                 href="/contact"
                 className="inline-block bg-orange-500 text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors"
               >
-                Send Inquiry
+                {t('contact.form.submit')}
               </Link>
             </div>
           </div>
