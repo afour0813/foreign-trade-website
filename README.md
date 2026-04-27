@@ -1,363 +1,258 @@
-# projects
+# AnnaHairBows - Children's Hair Accessories B2B Website
 
-这是一个基于 [Next.js 16](https://nextjs.org) + [shadcn/ui](https://ui.shadcn.com) 的全栈应用项目，由扣子编程 CLI 创建。
+A professional B2B e-commerce website for children's hair accessories manufacturer, featuring a public-facing showcase website with multi-language support (English/Korean) and a Chinese admin management system.
 
-## 快速开始
+## Tech Stack
 
-### 启动开发服务器
+- **Framework**: Next.js 16 (App Router)
+- **Core**: React 19
+- **Language**: TypeScript 5
+- **UI Components**: shadcn/ui (based on Radix UI)
+- **Styling**: Tailwind CSS 4
+- **Database**: PostgreSQL (via Supabase)
+- **Package Manager**: pnpm
+
+## Features
+
+### Public Website
+- Homepage with banner carousel, categories, and featured products
+- Product listing with category filtering and search
+- Product detail pages with full specifications
+- About Us page
+- Contact Us page with inquiry form
+- News & Updates section
+- Download center for catalogs and documents
+- Multi-language support (English / Korean) with top-right language switcher
+- Responsive design (mobile + desktop)
+
+### Admin Panel (Chinese)
+- Authentication system (login / register)
+- Dashboard with statistics overview
+- Product management (CRUD)
+- Category management (CRUD)
+- Banner management (CRUD)
+- News management (CRUD)
+- Download management (CRUD)
+- Inquiry management (read status, status updates, email reply)
+- Site settings (contact info, about us content, SEO)
+
+## Prerequisites
+
+- Node.js 20+ (recommended: 24)
+- pnpm 9+
+- Supabase account (for PostgreSQL database)
+
+## Getting Started
+
+### 1. Clone the repository
 
 ```bash
-coze dev
+git clone https://github.com/afour0813/foreign-trade-website.git
+cd foreign-trade-website
 ```
 
-启动后，在浏览器中打开 [http://localhost:5000](http://localhost:5000) 查看应用。
-
-开发服务器支持热更新，修改代码后页面会自动刷新。
-
-### 构建生产版本
+### 2. Install dependencies
 
 ```bash
-coze build
+pnpm install
 ```
 
-### 启动生产服务器
+### 3. Configure environment variables
+
+Create a `.env` file in the project root:
+
+```env
+# Supabase Database (required)
+COZE_SUPABASE_URL=https://your-project.supabase.co
+COZE_SUPABASE_ANON_KEY=your-anon-key
+COZE_SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# Server port (default: 5000)
+DEPLOY_RUN_PORT=5000
+
+# Project domain (optional, for absolute URL generation)
+COZE_PROJECT_DOMAIN_DEFAULT=https://yourdomain.com
+```
+
+### 4. Start development server
 
 ```bash
-coze start
+pnpm dev
 ```
 
-## 项目结构
+Open [http://localhost:5000](http://localhost:5000) to view the website.
+
+### 5. Build for production
+
+```bash
+pnpm build
+```
+
+### 6. Start production server
+
+```bash
+pnpm start
+```
+
+## Project Structure
 
 ```
 src/
-├── app/                      # Next.js App Router 目录
-│   ├── layout.tsx           # 根布局组件
-│   ├── page.tsx             # 首页
-│   ├── globals.css          # 全局样式（包含 shadcn 主题变量）
-│   └── [route]/             # 其他路由页面
-├── components/              # React 组件目录
-│   └── ui/                  # shadcn/ui 基础组件（优先使用）
-│       ├── button.tsx
-│       ├── card.tsx
-│       └── ...
-├── lib/                     # 工具函数库
-│   └── utils.ts            # cn() 等工具函数
-└── hooks/                   # 自定义 React Hooks（可选）
-
-server/
-├── index.ts                 # 自定义服务器入口
-├── tsconfig.json           # Server TypeScript 配置
-└── dist/                    # 编译输出目录（自动生成）
+├── app/                              # Next.js App Router pages
+│   ├── page.tsx                      # Homepage
+│   ├── layout.tsx                    # Root layout
+│   ├── products/                     # Products pages
+│   │   ├── page.tsx                  # Products listing
+│   │   └── [slug]/page.tsx          # Product detail
+│   ├── about/page.tsx               # About Us page
+│   ├── contact/page.tsx             # Contact Us page
+│   ├── news/                        # News pages
+│   │   ├── page.tsx                 # News listing
+│   │   └── [slug]/page.tsx         # News detail
+│   ├── downloads/page.tsx           # Download center
+│   ├── admin/                       # Admin panel (Chinese)
+│   │   ├── (auth)/                  # Auth pages (login/register)
+│   │   └── (dashboard)/            # Dashboard pages
+│   └── api/                         # API routes
+│       ├── home/route.ts            # Homepage data
+│       ├── products/route.ts        # Products API
+│       ├── categories/route.ts      # Categories API
+│       ├── site/route.ts            # Site info API
+│       ├── news/route.ts            # News API
+│       ├── downloads/route.ts       # Downloads API
+│       ├── inquiries/route.ts       # Inquiry submission API
+│       └── admin/                   # Admin APIs (auth required)
+├── components/                       # React components
+│   ├── ui/                          # shadcn/ui components
+│   ├── Header.tsx                   # Site header (with language switcher)
+│   ├── Footer.tsx                   # Site footer
+│   ├── BannerCarousel.tsx           # Homepage banner
+│   ├── ProductCard.tsx              # Product card
+│   ├── CategoryCard.tsx             # Category card
+│   └── admin/                       # Admin components
+├── lib/                             # Utilities
+│   ├── db.ts                        # Database operations
+│   ├── admin-auth.ts                # Admin authentication
+│   ├── i18n/                        # Internationalization
+│   │   ├── config.ts               # Locale config (en, ko)
+│   │   ├── translations.ts         # EN/KO translation dictionaries
+│   │   └── context.tsx             # I18nProvider + useI18n hook
+│   └── utils.ts                    # Utility functions
+├── storage/database/                # Database configuration
+│   ├── shared/schema.ts            # Database schema
+│   └── supabase-client.ts          # Supabase client
+└── server.ts                        # Custom server entry
 ```
 
-## 核心开发规范
+## API Endpoints
 
-### 1. 组件开发
+### Public APIs
 
-**优先使用 shadcn/ui 基础组件**
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/home` | Homepage data (banners, categories, featured products) |
+| GET | `/api/products` | List products (supports `category`, `slug` filters) |
+| GET | `/api/categories` | List categories |
+| GET | `/api/site` | Site info and contact details |
+| GET | `/api/news` | List news articles |
+| GET | `/api/downloads` | List downloadable files |
+| POST | `/api/inquiries` | Submit an inquiry |
 
-本项目已预装完整的 shadcn/ui 组件库，位于 `src/components/ui/` 目录。开发时应优先使用这些组件作为基础：
+### Admin APIs (Authentication required)
 
-```tsx
-// ✅ 推荐：使用 shadcn 基础组件
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/admin/auth` | Login |
+| DELETE | `/api/admin/auth` | Logout |
+| GET | `/api/admin/auth` | Check authentication |
+| POST | `/api/admin/register` | Register admin user |
+| GET/POST | `/api/admin/products` | Product CRUD |
+| PUT/DELETE | `/api/admin/products` | Product update/delete |
+| GET/POST | `/api/admin/categories` | Category CRUD |
+| PUT/DELETE | `/api/admin/categories` | Category update/delete |
+| GET/POST | `/api/admin/banners` | Banner CRUD |
+| PUT/DELETE | `/api/admin/banners` | Banner update/delete |
+| GET/POST | `/api/admin/news` | News CRUD |
+| PUT/DELETE | `/api/admin/news` | News update/delete |
+| GET/POST | `/api/admin/downloads` | Download CRUD |
+| PUT/DELETE | `/api/admin/downloads` | Download update/delete |
+| GET/POST | `/api/admin/inquiries` | Inquiry management |
+| PUT | `/api/admin/inquiries` | Update inquiry status |
+| GET/POST | `/api/admin/settings` | Site settings |
 
-export default function MyComponent() {
-  return (
-    <Card>
-      <CardHeader>标题</CardHeader>
-      <CardContent>
-        <Input placeholder="输入内容" />
-        <Button>提交</Button>
-      </CardContent>
-    </Card>
-  );
-}
-```
+## Database Schema
 
-**可用的 shadcn 组件清单**
+### Tables
 
-- 表单：`button`, `input`, `textarea`, `select`, `checkbox`, `radio-group`, `switch`, `slider`
-- 布局：`card`, `separator`, `tabs`, `accordion`, `collapsible`, `scroll-area`
-- 反馈：`alert`, `alert-dialog`, `dialog`, `toast`, `sonner`, `progress`
-- 导航：`dropdown-menu`, `menubar`, `navigation-menu`, `context-menu`
-- 数据展示：`table`, `avatar`, `badge`, `hover-card`, `tooltip`, `popover`
-- 其他：`calendar`, `command`, `carousel`, `resizable`, `sidebar`
+| Table | Description | Key Fields |
+|-------|-------------|------------|
+| `admin_users` | Admin accounts | id, username, password, email, is_active |
+| `categories` | Product categories | id, name, slug, image_url, sort_order, is_active |
+| `products` | Products | id, name, slug, price, category_id, images, is_featured, is_active |
+| `banners` | Homepage banners | id, title, image_url, link_url, sort_order, is_active |
+| `news` | News articles | id, title, slug, content, category, is_active |
+| `downloads` | Downloadable files | id, title, file_url, file_size, download_count, is_active |
+| `inquiries` | Customer inquiries | id, name, email, phone, message, status, is_read |
+| `site_settings` | Key-value settings | id, key, value, description |
+| `contact_info` | Company contact info | id, address, phone, email, whatsapp, wechat, skype |
 
-详见 `src/components/ui/` 目录下的具体组件实现。
+## Deployment
 
-### 2. 路由开发
-
-Next.js 使用文件系统路由，在 `src/app/` 目录下创建文件夹即可添加路由：
+### PM2 (Recommended for VPS)
 
 ```bash
-# 创建新路由 /about
-src/app/about/page.tsx
+# Install PM2
+npm install -g pm2
 
-# 创建动态路由 /posts/[id]
-src/app/posts/[id]/page.tsx
+# Build
+pnpm build
 
-# 创建路由组（不影响 URL）
-src/app/(marketing)/about/page.tsx
+# Start with PM2
+pm2 start pnpm --name "annahairbows" -- start
 
-# 创建 API 路由
-src/app/api/users/route.ts
+# Auto-restart on reboot
+pm2 startup
+pm2 save
 ```
 
-**页面组件示例**
-
-```tsx
-// src/app/about/page.tsx
-import { Button } from '@/components/ui/button';
-
-export const metadata = {
-  title: '关于我们',
-  description: '关于页面描述',
-};
-
-export default function AboutPage() {
-  return (
-    <div>
-      <h1>关于我们</h1>
-      <Button>了解更多</Button>
-    </div>
-  );
-}
-```
-
-**动态路由示例**
-
-```tsx
-// src/app/posts/[id]/page.tsx
-export default async function PostPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
-
-  return <div>文章 ID: {id}</div>;
-}
-```
-
-**API 路由示例**
-
-```tsx
-// src/app/api/users/route.ts
-import { NextResponse } from 'next/server';
-
-export async function GET() {
-  return NextResponse.json({ users: [] });
-}
-
-export async function POST(request: Request) {
-  const body = await request.json();
-  return NextResponse.json({ success: true });
-}
-```
-
-### 3. 依赖管理
-
-**必须使用 pnpm 管理依赖**
+### Docker
 
 ```bash
-# ✅ 安装依赖
-pnpm install
+# Build image
+docker build -t annahairbows .
 
-# ✅ 添加新依赖
-pnpm add package-name
-
-# ✅ 添加开发依赖
-pnpm add -D package-name
-
-# ❌ 禁止使用 npm 或 yarn
-# npm install  # 错误！
-# yarn add     # 错误！
+# Run container
+docker run -d \
+  --name annahairbows \
+  -p 5000:5000 \
+  --env-file .env \
+  --restart unless-stopped \
+  annahairbows
 ```
 
-项目已配置 `preinstall` 脚本，使用其他包管理器会报错。
+### Nginx Reverse Proxy
 
-### 4. 样式开发
+```nginx
+server {
+    listen 443 ssl http2;
+    server_name yourdomain.com;
 
-**使用 Tailwind CSS v4**
+    ssl_certificate     /etc/ssl/yourdomain.crt;
+    ssl_certificate_key /etc/ssl/yourdomain.key;
 
-本项目使用 Tailwind CSS v4 进行样式开发，并已配置 shadcn 主题变量。
-
-```tsx
-// 使用 Tailwind 类名
-<div className="flex items-center gap-4 p-4 rounded-lg bg-background">
-  <Button className="bg-primary text-primary-foreground">
-    主要按钮
-  </Button>
-</div>
-
-// 使用 cn() 工具函数合并类名
-import { cn } from '@/lib/utils';
-
-<div className={cn(
-  "base-class",
-  condition && "conditional-class",
-  className
-)}>
-  内容
-</div>
-```
-
-**主题变量**
-
-主题变量定义在 `src/app/globals.css` 中，支持亮色/暗色模式：
-
-- `--background`, `--foreground`
-- `--primary`, `--primary-foreground`
-- `--secondary`, `--secondary-foreground`
-- `--muted`, `--muted-foreground`
-- `--accent`, `--accent-foreground`
-- `--destructive`, `--destructive-foreground`
-- `--border`, `--input`, `--ring`
-
-### 5. 表单开发
-
-推荐使用 `react-hook-form` + `zod` 进行表单开发：
-
-```tsx
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
-const formSchema = z.object({
-  username: z.string().min(2, '用户名至少 2 个字符'),
-  email: z.string().email('请输入有效的邮箱'),
-});
-
-export default function MyForm() {
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: { username: '', email: '' },
-  });
-
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
-  };
-
-  return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Input {...form.register('username')} />
-      <Input {...form.register('email')} />
-      <Button type="submit">提交</Button>
-    </form>
-  );
+    location / {
+        proxy_pass http://127.0.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
 }
 ```
 
-### 6. 数据获取
+## License
 
-**服务端组件（推荐）**
-
-```tsx
-// src/app/posts/page.tsx
-async function getPosts() {
-  const res = await fetch('https://api.example.com/posts', {
-    cache: 'no-store', // 或 'force-cache'
-  });
-  return res.json();
-}
-
-export default async function PostsPage() {
-  const posts = await getPosts();
-
-  return (
-    <div>
-      {posts.map(post => (
-        <div key={post.id}>{post.title}</div>
-      ))}
-    </div>
-  );
-}
-```
-
-**客户端组件**
-
-```tsx
-'use client';
-
-import { useEffect, useState } from 'react';
-
-export default function ClientComponent() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    fetch('/api/data')
-      .then(res => res.json())
-      .then(setData);
-  }, []);
-
-  return <div>{JSON.stringify(data)}</div>;
-}
-```
-
-## 常见开发场景
-
-### 添加新页面
-
-1. 在 `src/app/` 下创建文件夹和 `page.tsx`
-2. 使用 shadcn 组件构建 UI
-3. 根据需要添加 `layout.tsx` 和 `loading.tsx`
-
-### 创建业务组件
-
-1. 在 `src/components/` 下创建组件文件（非 UI 组件）
-2. 优先组合使用 `src/components/ui/` 中的基础组件
-3. 使用 TypeScript 定义 Props 类型
-
-### 添加全局状态
-
-推荐使用 React Context 或 Zustand：
-
-```tsx
-// src/lib/store.ts
-import { create } from 'zustand';
-
-interface Store {
-  count: number;
-  increment: () => void;
-}
-
-export const useStore = create<Store>((set) => ({
-  count: 0,
-  increment: () => set((state) => ({ count: state.count + 1 })),
-}));
-```
-
-### 集成数据库
-
-推荐使用 Prisma 或 Drizzle ORM，在 `src/lib/db.ts` 中配置。
-
-## 技术栈
-
-- **框架**: Next.js 16.1.1 (App Router)
-- **UI 组件**: shadcn/ui (基于 Radix UI)
-- **样式**: Tailwind CSS v4
-- **表单**: React Hook Form + Zod
-- **图标**: Lucide React
-- **字体**: Geist Sans & Geist Mono
-- **包管理器**: pnpm 9+
-- **TypeScript**: 5.x
-
-## 参考文档
-
-- [Next.js 官方文档](https://nextjs.org/docs)
-- [shadcn/ui 组件文档](https://ui.shadcn.com)
-- [Tailwind CSS 文档](https://tailwindcss.com/docs)
-- [React Hook Form](https://react-hook-form.com)
-
-## 重要提示
-
-1. **必须使用 pnpm** 作为包管理器
-2. **优先使用 shadcn/ui 组件** 而不是从零开发基础组件
-3. **遵循 Next.js App Router 规范**，正确区分服务端/客户端组件
-4. **使用 TypeScript** 进行类型安全开发
-5. **使用 `@/` 路径别名** 导入模块（已配置）
+Private - All rights reserved.
